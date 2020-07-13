@@ -45,6 +45,7 @@ public class Start {
 
 	public Start() {
 		initialize();
+		dieSteuerung = new Steuerung(this);
 	}
 
 	private void initialize() {
