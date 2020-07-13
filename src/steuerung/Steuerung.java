@@ -1,9 +1,11 @@
+package steuerung;
 import regal.Regalfach;
-import gui.GUI;
+import gui.Start;
 public class Steuerung {
     Regalfach dasRegal[][] = new Regalfach[3][3];
-    GUI dieGui;
-    public Steuerung(){
+    Start dieGui;
+    public Steuerung(Start dieGui){
+    	this.dieGui = dieGui;
         init();
     }
     private void init(){
@@ -11,6 +13,5 @@ public class Steuerung {
 			for(int m=0;m<3;m++)
                 dasRegal[n][m] = new Regalfach(n, m);
                 
-        dieGui = new GUI();
 	}
 }
