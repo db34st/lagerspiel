@@ -143,7 +143,7 @@ public class Start {
 		JPanel pnl1 = new JPanel();
 		pnl1.setPreferredSize(new Dimension(500, 200));
 		pnl1.setMaximumSize(new Dimension(500, 32767));
-		pnl1.setBorder(new LineBorder(new Color(0, 0, 0), 4));
+		pnl1.setBorder(new LineBorder(new Color(0, 0, 0), 1));
 		pnlAuftraege.add(pnl1);
 		
 		for(int n = 0; n< maxAnzahlAuftraege; n++) {
@@ -157,25 +157,25 @@ public class Start {
 		pnlAuftrag[0].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pnlAuftrag[0].setBackground(Color.RED);
-				pnlAuftrag[1].setBackground(null);
-				pnlAuftrag[2].setBackground(null);
+				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 			}
 		});
 		pnlAuftrag[1].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pnlAuftrag[0].setBackground(null);
-				pnlAuftrag[1].setBackground(Color.RED);
-				pnlAuftrag[2].setBackground(null);
+				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 			}
 		});
 		pnlAuftrag[2].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pnlAuftrag[0].setBackground(null);
-				pnlAuftrag[1].setBackground(null);
-				pnlAuftrag[2].setBackground(Color.RED);
+				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 4));
 			}
 		});
 
