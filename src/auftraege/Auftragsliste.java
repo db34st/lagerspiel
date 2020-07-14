@@ -24,6 +24,7 @@ public class Auftragsliste {
     public void neuerAuftrag(Auftrag pAuftrag) {
     	pAuftrag.next = pos.next;
     	pos.next = pAuftrag;
+    	advance();
     }
     public void entferneAuftrag() {
     	pos.next = pos.next.next;
