@@ -20,10 +20,15 @@ public class Steuerung {
 	}
     public Auftragsliste neuerAuftrag() {
     	String[] rAuftrag = derScanner.getNaechsteZeile();
-    	if(dieAuftragsListe == null) 
-    		dieAuftragsListe = new Auftragsliste(new Auftrag(rAuftrag));
-    	else 
-    		dieAuftragsListe.neuerAuftrag(new Auftrag(rAuftrag));
+	    try {
+	    	if(dieAuftragsListe == null) 
+	    		dieAuftragsListe = new Auftragsliste(new Auftrag(rAuftrag));
+	    	else 
+	    		dieAuftragsListe.neuerAuftrag(new Auftrag(rAuftrag));
+    	}
+	    catch (Exception e) {
+	    	System.out.println(e.getMessage());
+	    }
     	return dieAuftragsListe;
     }
 }
