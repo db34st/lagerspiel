@@ -5,6 +5,7 @@ public class Auftrag {
     private int aId, aBelohnung;
     private boolean aAuftragsArt; //true=einlagern, false=auslagern
     private Produkt aProdukt;
+    public Auftrag next;
     
     public Auftrag(String pProdukt, String pAttr1, String pAttr2, int pBelohnung) throws Exception{
     	aId = idCounter++;
@@ -23,4 +24,16 @@ public class Auftrag {
     			throw new Exception("eingelesenes Produkt nicht vorhanden!");
     	}
     }
+	public int getId() {
+		return aId;
+	}
+	public int getBelohnung() {
+		return aBelohnung;
+	}
+	public boolean getAuftragsArt() {
+		return aAuftragsArt;
+	}
+	public Produkt getProdukt() {
+		return aProdukt;
+	}
 }
