@@ -32,6 +32,8 @@ import auftraege.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.Component;
 import javax.swing.UIManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Start {
 
@@ -77,6 +79,7 @@ public class Start {
 			lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
 			lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
 			lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
+			pnlAuftrag[i].setVisible(true);
 			pListe.advance();
 			i++;
 			if(i == 3) btnNeuerAuftrag.setEnabled(false);
@@ -146,9 +149,35 @@ public class Start {
 		for(int n = 0; n< maxAnzahlAuftraege; n++) {
 			pnlAuftrag[n] = new JPanel();
 			pnlAuftrag[n].setPreferredSize(new Dimension(400, 50));
-			pnlAuftrag[n].setMaximumSize(new Dimension(400, 32767));		       
+			pnlAuftrag[n].setMaximumSize(new Dimension(400, 32767));
+			pnlAuftrag[n].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+			pnlAuftrag[n].setVisible(false);
 			pnl1.add(pnlAuftrag[n]);			
 		}
+		pnlAuftrag[0].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pnlAuftrag[0].setBackground(Color.RED);
+				pnlAuftrag[1].setBackground(null);
+				pnlAuftrag[2].setBackground(null);
+			}
+		});
+		pnlAuftrag[1].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pnlAuftrag[0].setBackground(null);
+				pnlAuftrag[1].setBackground(Color.RED);
+				pnlAuftrag[2].setBackground(null);
+			}
+		});
+		pnlAuftrag[2].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pnlAuftrag[0].setBackground(null);
+				pnlAuftrag[1].setBackground(null);
+				pnlAuftrag[2].setBackground(Color.RED);
+			}
+		});
 
 		for(int n = 0; n < 3; n++) {
 			lblProduktName[n] = new JLabel("Produktname");
