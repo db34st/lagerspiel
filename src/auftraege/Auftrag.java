@@ -3,9 +3,8 @@ import produkte.*;
 public class Auftrag {
 	static int idCounter;
     private int aId, aBelohnung;
-    private String aAuftragsArt; //true=einlagern, false=auslagern
+    private String aAuftragsArt;
     private Produkt aProdukt;
-    public Auftrag next;
     
     public Auftrag(String[] temp) {
     	try {
