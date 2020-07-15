@@ -17,4 +17,7 @@ public class Regalfach {
     public void setProdukt(Produkt aProdukt){
         this.aProdukt = aProdukt;
     }
+    public Produkt getProdukt() {
+    	return aProdukt;
+    }
 }
