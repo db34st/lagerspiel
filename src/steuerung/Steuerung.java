@@ -38,24 +38,26 @@ public class Steuerung {
     private void einlagern(Auftrag pAuftrag, Regalfach pRegalFach){
     	if(pAuftrag.getProdukt().pruefeObEinlagerbar(pRegalFach.getPosX(), pRegalFach.getPosY(), 3)) {
     		try {
-    			dieAuftragsListe.getAuftragId(pAuftrag.getId());	//Test ob Auftrag vorhanden
+    			dieAuftragsListe.getAuftragById(pAuftrag.getId());	//Test ob Auftrag vorhanden
     			pRegalFach.setProdukt(pAuftrag.getProdukt());
     			// neuerBilanzEintrag()
     			
-    			dieAuftragsListe.entferneAuftrag(pAuftrag.getId());
+    			dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
     			dieGui.aktualisiereRegal(dasRegal);
     			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
+    			aFokusAuftrag = null;
+    			aFokusRegalFach = null;
     		}
     		catch (Exception e) {
-    			System.out.println(e.getMessage());
+    			System.out.println("Fehler beim einlagern: "+e.getMessage());
     		}    		
     	}
     }
     
     
-    public void fokusiereAuftrag(int pId) {
+    public void fokusiereAuftrag(int pIndex) {
     	try {
-    		aFokusAuftrag = dieAuftragsListe.getAuftragId(pId);
+    		aFokusAuftrag = dieAuftragsListe.getAuftrag(pIndex);
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());

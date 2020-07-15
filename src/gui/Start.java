@@ -44,7 +44,6 @@ public class Start {
 	
 	int maxAnzahlAuftraege = 3;
 	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
-	int[] aAuftragsId = new int[maxAnzahlAuftraege];
 	JLabel[] lblAuftragsArt = new JLabel[maxAnzahlAuftraege];
 	JLabel[] lblProduktName = new JLabel[maxAnzahlAuftraege];
 	JLabel[] lblProduktAttr1 = new JLabel[maxAnzahlAuftraege];
@@ -74,10 +73,10 @@ public class Start {
 	public void aktualisiereAuftragsListe(Auftragsliste pListe) {
 		Auftrag[] auftraege = new Auftrag[3];
 		for(int i = 0; i< 3; i++){
+			
 			pnlAuftrag[i].setVisible(false);
-			auftraege[i] = pListe.getAuftragIndex(i);
+			auftraege[i] = pListe.getAuftrag(i);
 			if(auftraege[i] != null) {
-				aAuftragsId[i] = auftraege[i].getId();
 				lblProduktName[i].setText(auftraege[i].getProdukt().getProduktName());
 				lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
 				lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
@@ -94,7 +93,8 @@ public class Start {
 				pnlAuftrag[i].setVisible(true);
 			}
 			if(pListe.getAnzahl() >= 3) btnNeuerAuftrag.setEnabled(false);
-		}		
+			else btnNeuerAuftrag.setEnabled(true);
+		}
 	}
 	public void aktualisiereRegal(Regalfach pRegal[]) {
 		for(int i = 0; i < 9; i++) {
@@ -304,7 +304,8 @@ public class Start {
 				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 4));
 				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				dieSteuerung.fokusiereAuftrag(aAuftragsId[0]);
+				dieSteuerung.fokusiereAuftrag(0);
+				System.out.println("Fokus Auftrag1");
 			}
 		});
 		pnlAuftrag[1].addMouseListener(new MouseAdapter() {
@@ -313,7 +314,8 @@ public class Start {
 				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 4));
 				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				dieSteuerung.fokusiereAuftrag(aAuftragsId[1]);
+				dieSteuerung.fokusiereAuftrag(1);
+				System.out.println("Fokus Auftrag2");
 			}
 		});
 		pnlAuftrag[2].addMouseListener(new MouseAdapter() {
@@ -322,7 +324,8 @@ public class Start {
 				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 4));
-				dieSteuerung.fokusiereAuftrag(aAuftragsId[2]);
+				dieSteuerung.fokusiereAuftrag(2);
+				System.out.println("Fokus Auftrag3");
 			}
 		});
 
