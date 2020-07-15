@@ -78,6 +78,14 @@ public class Start {
 			lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
 			lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
 			lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
+			if(auftraege[i].getAuftragsArt().charAt(0) == 'E')
+				lblAuftragsArt[i].setText("  /\\");
+			else if(auftraege[i].getAuftragsArt().charAt(0) == 'A')
+				lblAuftragsArt[i].setText("  \\/");
+			else {
+				System.out.println("Fehler bei AuftragsArt! => " + auftraege[i].getAuftragsArt());
+				
+			}
 			pnlAuftrag[i].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 			setBackground(lblProduktAttr1[i], pnlAuftrag[i]);			
 			pnlAuftrag[i].setVisible(true);
@@ -215,22 +223,27 @@ public class Start {
 		});
 
 		for(int n = 0; n < 3; n++) {
+			Font f = new Font("Dialog", Font.PLAIN, 24);
 			lblProduktName[n] = new JLabel("Produktname");
-			lblProduktName[n].setFont(new Font("Dialog", Font.PLAIN, 24));
+			lblProduktName[n].setFont(f);
 			lblProduktName[n].setBorder(null);
 			pnlAuftrag[n].add(lblProduktName[n]);
 			
 			lblProduktAttr1[n] = new JLabel("Attr1");
-			lblProduktAttr1[n].setFont(new Font("Tahoma", Font.PLAIN, 24));
+			lblProduktAttr1[n].setFont(f);
 			pnlAuftrag[n].add(lblProduktAttr1[n]);
 			
 			lblProduktAttr2[n] = new JLabel("Attr2");
-			lblProduktAttr2[n].setFont(new Font("Tahoma", Font.PLAIN, 24));
+			lblProduktAttr2[n].setFont(f);
 			pnlAuftrag[n].add(lblProduktAttr2[n]);
 		
 			lblBelohnung[n] = new JLabel("Belohnung");
-			lblBelohnung[n].setFont(new Font("Tahoma", Font.PLAIN, 24));
+			lblBelohnung[n].setFont(f);
 			pnlAuftrag[n].add(lblBelohnung[n]);
+			
+			lblAuftragsArt[n] = new JLabel("Art");
+			lblAuftragsArt[n].setFont(f);
+			pnlAuftrag[n].add(lblAuftragsArt[n]);
 		}
 		
 		
