@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 
 import auftraege.*;
+import regal.Regalfach;
 
 import javax.swing.border.EmptyBorder;
 import java.awt.Component;
@@ -42,7 +43,8 @@ public class Start {
 	JButton btnNeuerAuftrag;
 	
 	int maxAnzahlAuftraege = 3;
-	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege]; 
+	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
+	int[] aAuftragsId = new int[maxAnzahlAuftraege];
 	JLabel[] lblAuftragsArt = new JLabel[maxAnzahlAuftraege];
 	JLabel[] lblProduktName = new JLabel[maxAnzahlAuftraege];
 	JLabel[] lblProduktAttr1 = new JLabel[maxAnzahlAuftraege];
@@ -71,28 +73,36 @@ public class Start {
 	}
 	public void aktualisiereAuftragsListe(Auftragsliste pListe) {
 		Auftrag[] auftraege = new Auftrag[3];
-		int i = 0;
-		do{
-			auftraege[i] = pListe.elem();
-			lblProduktName[i].setText(auftraege[i].getProdukt().getProduktName());
-			lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
-			lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
-			lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
-			if(auftraege[i].getAuftragsArt().charAt(0) == 'E')
-				lblAuftragsArt[i].setText("  /\\");
-			else if(auftraege[i].getAuftragsArt().charAt(0) == 'A')
-				lblAuftragsArt[i].setText("  \\/");
-			else {
-				System.out.println("Fehler bei AuftragsArt! => " + auftraege[i].getAuftragsArt());
-				
+		for(int i = 0; i< 3; i++){
+			pnlAuftrag[i].setVisible(false);
+			auftraege[i] = pListe.getAuftragIndex(i);
+			if(auftraege[i] != null) {
+				aAuftragsId[i] = auftraege[i].getId();
+				lblProduktName[i].setText(auftraege[i].getProdukt().getProduktName());
+				lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
+				lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
+				lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
+				if(auftraege[i].getAuftragsArt().charAt(0) == 'E')
+					lblAuftragsArt[i].setText("  /\\");
+				else if(auftraege[i].getAuftragsArt().charAt(0) == 'A')
+					lblAuftragsArt[i].setText("  \\/");
+				else {
+					System.out.println("Fehler bei AuftragsArt! => " + auftraege[i].getAuftragsArt());
+				}
+				pnlAuftrag[i].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+				setBackground(lblProduktAttr1[i], pnlAuftrag[i]);
+				pnlAuftrag[i].setVisible(true);
 			}
-			pnlAuftrag[i].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-			setBackground(lblProduktAttr1[i], pnlAuftrag[i]);			
-			pnlAuftrag[i].setVisible(true);
-			pListe.advance();
-			i++;
-			if(i == 3) btnNeuerAuftrag.setEnabled(false);
-		}while(!pListe.endpos());		
+			if(pListe.getAnzahl() >= 3) btnNeuerAuftrag.setEnabled(false);
+		}		
+	}
+	public void aktualisiereRegal(Regalfach pRegal[]) {
+		for(int i = 0; i < 9; i++) {
+			if(pRegal[i].getProdukt() != null) {
+				btnRegalFach[i].setText(pRegal[i].getProdukt().getProduktName()+';'+pRegal[i].getProdukt().getAttribut2());
+				setBackground(btnRegalFach[i], pRegal[i].getProdukt().getAttribut1());
+			}
+		}
 	}
 	private void setBackground(JLabel lbl, JPanel pnl) {
 		switch(lbl.getText()) {
@@ -105,7 +115,6 @@ public class Start {
 			case "Grün":
 				pnl.setBackground(new Color(0xCEF6E3));
 				break;
-				
 			case "Kiefer":
 				pnl.setBackground(new Color(0x5F4C0B));
 				break;
@@ -124,6 +133,41 @@ public class Start {
 				break;
 			case "Sandstein":
 				pnl.setBackground(new Color(0xF7F8E0));
+				break;
+			default:
+				System.out.println("Fehler bei Hintergrund");
+				break;
+		}
+	}
+	private void setBackground(JButton btn, String attr) {
+		switch(attr) {
+			case "Weiß":
+				btn.setBackground(new Color(0xffffff));
+				break;
+			case "Blau":
+				btn.setBackground(new Color(0xA9D0F5));
+				break;
+			case "Grün":
+				btn.setBackground(new Color(0xCEF6E3));
+				break;
+			case "Kiefer":
+				btn.setBackground(new Color(0x5F4C0B));
+				break;
+			case "Buche":
+				btn.setBackground(new Color(0xB18904));
+				break;
+			case "Eiche":
+				btn.setBackground(new Color(0x886A08));
+				break;
+				
+			case "Marmor":
+				btn.setBackground(new Color(0xF2F2F2));
+				break;
+			case "Granit":
+				btn.setBackground(new Color(0x6E6E6E));
+				break;
+			case "Sandstein":
+				btn.setBackground(new Color(0xF7F8E0));
 				break;
 			default:
 				System.out.println("Fehler bei Hintergrund");
@@ -159,12 +203,69 @@ public class Start {
 			pnlCenter.add(btnRegalFach[n]);
 		}
 		
+		btnRegalFach[0].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(0);
+			}
+		});
+		btnRegalFach[1].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(1);
+			}
+		});
+		btnRegalFach[2].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(2);
+			}
+		});
+		btnRegalFach[3].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(3);
+			}
+		});
+		btnRegalFach[4].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(4);
+			}
+		});
+		btnRegalFach[5].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(5);
+			}
+		});
+		btnRegalFach[6].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(6);
+			}
+		});
+		btnRegalFach[7].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(7);
+			}
+		});
+		btnRegalFach[8].addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {				
+				dieSteuerung.fokusiereRegalFach(8);
+			}
+		});		
+		
 		JPanel pnlButtons = new JPanel();
 		pnlCenter.add(pnlButtons);
 		
 		btnNeuerAuftrag = new JButton("Neuer Auftrag");
 		btnNeuerAuftrag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dieSteuerung.resetFokusAuftrag();
+				dieSteuerung.resetFokusRegalFach();
 				System.out.println("Klick neuer Auftrag");
 				Auftragsliste liste = dieSteuerung.neuerAuftrag();
 				aktualisiereAuftragsListe(liste);
@@ -189,7 +290,7 @@ public class Start {
 		pnl1.setBorder(new LineBorder(new Color(0, 0, 0), 1));
 		pnlAuftraege.add(pnl1);
 		
-		for(int n = 0; n< maxAnzahlAuftraege; n++) {
+		for(int n = 0; n < maxAnzahlAuftraege; n++) {
 			pnlAuftrag[n] = new JPanel();
 			pnlAuftrag[n].setPreferredSize(new Dimension(400, 50));
 			pnlAuftrag[n].setMaximumSize(new Dimension(400, 32767));
@@ -203,6 +304,7 @@ public class Start {
 				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 4));
 				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+				dieSteuerung.fokusiereAuftrag(aAuftragsId[0]);
 			}
 		});
 		pnlAuftrag[1].addMouseListener(new MouseAdapter() {
@@ -211,6 +313,7 @@ public class Start {
 				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 4));
 				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+				dieSteuerung.fokusiereAuftrag(aAuftragsId[1]);
 			}
 		});
 		pnlAuftrag[2].addMouseListener(new MouseAdapter() {
@@ -219,6 +322,7 @@ public class Start {
 				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+				dieSteuerung.fokusiereAuftrag(aAuftragsId[2]);
 			}
 		});
 
