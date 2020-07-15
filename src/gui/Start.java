@@ -81,9 +81,9 @@ public class Start {
 				lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
 				lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
 				lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
-				if(auftraege[i].getAuftragsArt().charAt(0) == 'E')
+				if(auftraege[i].getAuftragsArt().equals("Einlagerung"))
 					lblAuftragsArt[i].setText("  /\\");
-				else if(auftraege[i].getAuftragsArt().charAt(0) == 'A')
+				else if(auftraege[i].getAuftragsArt().equals("Auslagerung"))
 					lblAuftragsArt[i].setText("  \\/");
 				else {
 					System.out.println("Fehler bei AuftragsArt! => " + auftraege[i].getAuftragsArt());
@@ -101,6 +101,10 @@ public class Start {
 			if(pRegal[i].getProdukt() != null) {
 				btnRegalFach[i].setText(pRegal[i].getProdukt().getProduktName()+';'+pRegal[i].getProdukt().getAttribut2());
 				setBackground(btnRegalFach[i], pRegal[i].getProdukt().getAttribut1());
+			}
+			else {
+				btnRegalFach[i].setText("leerer Lagerplatz");
+				btnRegalFach[i].setBackground(null);
 			}
 		}
 	}
@@ -200,6 +204,8 @@ public class Start {
 		for(int n = 0; n < 9; n++) {
 			btnRegalFach[n] = new JButton("Lagerplatz");
 			btnRegalFach[n].setPreferredSize(new Dimension(150, 150));
+			btnRegalFach[n].setText("leerer Lagerplatz");
+			btnRegalFach[n].setBackground(null);
 			pnlCenter.add(btnRegalFach[n]);
 		}
 		
