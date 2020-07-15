@@ -1,0 +1,7 @@
+Auftrag;Auftragsart;Produkt;Attribut1;Attribut2;Belohnung
+1;Einlagerung;Papier;Weiﬂ;A4;200
+2;Einlagerung;Stein;Marmor;Mittel;400
+3;Einlagerung;Holz;Kiefer;Bretter;200
+4;Auslagerung;Stein;Marmor;Mittel;400
+5;Auslagerung;Holz;Kiefer;Bretter;200
+6;Auslagerung;Papier;Weiﬂ;A4;200
