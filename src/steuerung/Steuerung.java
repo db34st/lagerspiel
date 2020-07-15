@@ -1,15 +1,15 @@
 package steuerung;
-import regal.Regalfach;
-
+import regal.*;
 import auftraege.*;
-import gui.Start;
-import produkte.Produkt;
+import bilanz.*;
+import gui.*;
+import produkte.*;
 public class Steuerung {
     Regalfach dasRegal[] = new Regalfach[9];
     Start dieGui;
     CsvReader derScanner;
     Auftragsliste dieAuftragsListe;
-    
+    Bilanz dieBilanz;
     Auftrag aFokusAuftrag;
     Regalfach aFokusRegalFach;
     
@@ -41,13 +41,18 @@ public class Steuerung {
     		try {
     			dieAuftragsListe.getAuftragById(pAuftrag.getId());	//Test ob Auftrag vorhanden
     			pRegalFach.setProdukt(pAuftrag.getProdukt());
-    			// neuerBilanzEintrag()
-    			
+    			Bilanzeintrag tempBilanzEintrag = new Bilanzeintrag(pAuftrag, true);
+    			if(dieBilanz == null)
+    				dieBilanz = new Bilanz(tempBilanzEintrag);
+    			else 
+    				dieBilanz.neuerEintrag(tempBilanzEintrag);
     			dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
-    			dieGui.aktualisiereRegal(dasRegal);
-    			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
     			aFokusAuftrag = null;
     			aFokusRegalFach = null;
+    			
+    			dieGui.aktualisiereRegal(dasRegal);
+    			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
+    			dieGui.aktualisiereBilanz(dieBilanz);
     		}
     		catch (Exception e) {
     			System.out.println("Fehler beim einlagern: "+e.getMessage());
@@ -62,14 +67,16 @@ public class Steuerung {
     			attr2 = ap.getAttribut2().equals(rp.getAttribut2());
     	if(name && attr1 && attr2) {
     		try {
-    		dieAuftragsListe.getAuftragById(pAuftrag.getId());
-    		pRegalFach.setProdukt(null);
-    		
-    		dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
-			dieGui.aktualisiereRegal(dasRegal);
-			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
-			aFokusAuftrag = null;
-			aFokusRegalFach = null;
+	    		dieAuftragsListe.getAuftragById(pAuftrag.getId());
+	    		pRegalFach.setProdukt(null);
+	    		dieBilanz.neuerEintrag(new Bilanzeintrag(pAuftrag, true));
+	    		dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
+	    		aFokusAuftrag = null;
+				aFokusRegalFach = null;
+	    		
+				dieGui.aktualisiereRegal(dasRegal);
+				dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
+				dieGui.aktualisiereBilanz(dieBilanz);
     		}
     		catch (Exception e) {
     			System.out.println("Fehler beim einlagern: "+e.getMessage());

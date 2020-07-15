@@ -2,9 +2,10 @@ package bilanz;
 
 public class Bilanz {
     private Bilanzeintrag anf, pos;
+    int kontostand = 0,
+    	anzahl = 0;
     public Bilanz(Bilanzeintrag pEintrag) {
-    	pos = anf = pEintrag;
-    	anf.next = null;
+    	neuerEintrag(pEintrag);
     }
     public boolean empty() {
 		return anf.next == null;
@@ -16,18 +17,26 @@ public class Bilanz {
 		pos = anf;
 	}
     public void advance() {
-    	if(endpos()) pos = anf;
-    	else pos = pos.next;
+    	if(!endpos()) 
+    		pos = pos.next;
     }
     public Bilanzeintrag elem() {
     	return pos;
     }
     public void neuerEintrag(Bilanzeintrag pEintrag) {
-    	pEintrag.next = pos.next;
-    	pos.next = pEintrag;
-    	advance();
+    	if(pEintrag.getAusgefuehrt())
+    		kontostand+=pEintrag.getAuftrag().getBelohnung();
+    	else
+    		kontostand-=pEintrag.getAuftrag().getBelohnung();
+    	reset();
+    	pEintrag.next = pos;
+    	anf = pos = pEintrag;
+    	anzahl++;
     }
-    public void entferneAuftrag() {
-    	pos.next = pos.next.next;
+    public int getAnzahl() {
+    	return anzahl;
+    }
+    public int getKontoStand() {
+    	return kontostand;
     }
 }

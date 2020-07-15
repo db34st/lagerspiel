@@ -9,4 +9,10 @@ public class Bilanzeintrag {
 		this.aAuftrag = aAuftrag;
 		this.aAusgefuehrt = aAusgefuehrt;
 	}
+	public Auftrag getAuftrag() {
+		return aAuftrag;
+	}
+	public boolean getAusgefuehrt() {
+		return aAusgefuehrt;
+	}
 }

@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 
 import auftraege.*;
+import bilanz.*;
 import regal.Regalfach;
 
 import javax.swing.border.EmptyBorder;
@@ -35,6 +36,8 @@ import java.awt.Component;
 import javax.swing.UIManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JTable;
+import javax.swing.JList;
 
 public class Start {
 
@@ -49,9 +52,8 @@ public class Start {
 	JLabel[] lblProduktAttr1 = new JLabel[maxAnzahlAuftraege];
 	JLabel[] lblProduktAttr2 = new JLabel[maxAnzahlAuftraege];
 	JLabel[] lblBelohnung = new JLabel[maxAnzahlAuftraege];
-	
 	JButton[] btnRegalFach = new JButton[9];
-	
+	JList listBilanz;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -69,6 +71,23 @@ public class Start {
 	public Start() {
 		initialize();
 		dieSteuerung = new Steuerung(this);
+	}
+	public void aktualisiereBilanz(Bilanz pBilanz) {
+		String[] temp = new String[pBilanz.getAnzahl() + 1];
+		temp[0] = "Bilanz: " + pBilanz.getKontoStand() + " €";
+		pBilanz.reset();
+		for (int i = 1; i < temp.length; i++) {
+			Auftrag a = pBilanz.elem().getAuftrag();
+			String  name = a.getProdukt().getProduktName(),
+					belohnung = Integer.toString(a.getBelohnung()),
+					art = a.getAuftragsArt().equals("Einlagerung") ? "/\\" : "\\/",
+					sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
+			temp[i] = art + "   " + name + "  " + sign+belohnung;
+			pBilanz.advance();
+		}
+		pBilanz.reset();
+		listBilanz.setListData(temp);
+		
 	}
 	public void aktualisiereAuftragsListe(Auftragsliste pListe) {
 		Auftrag[] auftraege = new Auftrag[3];
@@ -372,13 +391,12 @@ public class Start {
 		frame.getContentPane().add(pnlLeft, BorderLayout.WEST);
 		pnlLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JScrollPane pnlBilanz = new JScrollPane();
-		pnlBilanz.setToolTipText("");
-		pnlLeft.add(pnlBilanz);
-		
-		JLabel lblNewLabel = new JLabel("Bilanz");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 36));
-		pnlLeft.add(lblNewLabel);
+		listBilanz = new JList();
+		String[] temp = new String[1];
+		temp[0] = "Bilanz: 0 €";
+		listBilanz.setListData(temp);
+		listBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
+		pnlLeft.add(listBilanz);
 	}
 
 }
