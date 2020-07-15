@@ -53,7 +53,7 @@ public class Start {
 	JLabel[] lblProduktAttr2 = new JLabel[maxAnzahlAuftraege];
 	JLabel[] lblBelohnung = new JLabel[maxAnzahlAuftraege];
 	JButton[] btnRegalFach = new JButton[9];
-	JList listBilanz;
+	JList<String> listBilanz;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -391,7 +391,7 @@ public class Start {
 		frame.getContentPane().add(pnlLeft, BorderLayout.WEST);
 		pnlLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		listBilanz = new JList();
+		listBilanz = new JList<String>();
 		String[] temp = new String[1];
 		temp[0] = "Bilanz: 0 €";
 		listBilanz.setListData(temp);
