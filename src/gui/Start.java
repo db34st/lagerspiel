@@ -51,7 +51,6 @@ public class Start {
 	
 	JButton[] btnRegalFach = new JButton[9];
 	
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -79,13 +78,50 @@ public class Start {
 			lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
 			lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
 			lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
+			pnlAuftrag[i].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+			setBackground(lblProduktAttr1[i], pnlAuftrag[i]);			
 			pnlAuftrag[i].setVisible(true);
 			pListe.advance();
 			i++;
 			if(i == 3) btnNeuerAuftrag.setEnabled(false);
 		}while(!pListe.endpos());		
 	}
-	
+	private void setBackground(JLabel lbl, JPanel pnl) {
+		switch(lbl.getText()) {
+			case "Weiß":
+				pnl.setBackground(new Color(0xffffff));
+				break;
+			case "Blau":
+				pnl.setBackground(new Color(0xA9D0F5));
+				break;
+			case "Grün":
+				pnl.setBackground(new Color(0xCEF6E3));
+				break;
+				
+			case "Kiefer":
+				pnl.setBackground(new Color(0x5F4C0B));
+				break;
+			case "Buche":
+				pnl.setBackground(new Color(0xB18904));
+				break;
+			case "Eiche":
+				pnl.setBackground(new Color(0x886A08));
+				break;
+				
+			case "Marmor":
+				pnl.setBackground(new Color(0xF2F2F2));
+				break;
+			case "Granit":
+				pnl.setBackground(new Color(0x6E6E6E));
+				break;
+			case "Sandstein":
+				pnl.setBackground(new Color(0xF7F8E0));
+				break;
+			default:
+				System.out.println("Fehler bei Hintergrund");
+				break;
+		}
+	}
 	
 	private void initialize() {
 		frame = new JFrame();
@@ -127,7 +163,6 @@ public class Start {
 			}
 		});
 		pnlButtons.add(btnNeuerAuftrag);
-		
 		JButton btnSchrott = new JButton("Verschrotten");
 		pnlButtons.add(btnSchrott);
 		
@@ -150,7 +185,7 @@ public class Start {
 			pnlAuftrag[n] = new JPanel();
 			pnlAuftrag[n].setPreferredSize(new Dimension(400, 50));
 			pnlAuftrag[n].setMaximumSize(new Dimension(400, 32767));
-			pnlAuftrag[n].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+			pnlAuftrag[n].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 			pnlAuftrag[n].setVisible(false);
 			pnl1.add(pnlAuftrag[n]);			
 		}
