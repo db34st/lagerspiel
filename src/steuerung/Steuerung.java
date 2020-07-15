@@ -3,6 +3,7 @@ import regal.Regalfach;
 
 import auftraege.*;
 import gui.Start;
+import produkte.Produkt;
 public class Steuerung {
     Regalfach dasRegal[] = new Regalfach[9];
     Start dieGui;
@@ -53,8 +54,28 @@ public class Steuerung {
     		}    		
     	}
     }
-    
-    
+    private void auslagern(Auftrag pAuftrag, Regalfach pRegalFach) {
+    	Produkt ap = pAuftrag.getProdukt(),		//ap = AuftragsProdukt
+    			rp = pRegalFach.getProdukt();	//rp = RegalProdukt
+    	boolean name = ap.getProduktName() == rp.getProduktName(),
+    			attr1 = ap.getAttribut1().equals(rp.getAttribut1()),
+    			attr2 = ap.getAttribut2().equals(rp.getAttribut2());
+    	if(name && attr1 && attr2) {
+    		try {
+    		dieAuftragsListe.getAuftragById(pAuftrag.getId());
+    		pRegalFach.setProdukt(null);
+    		
+    		dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
+			dieGui.aktualisiereRegal(dasRegal);
+			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
+			aFokusAuftrag = null;
+			aFokusRegalFach = null;
+    		}
+    		catch (Exception e) {
+    			System.out.println("Fehler beim einlagern: "+e.getMessage());
+    		}
+    	}
+    }
     public void fokusiereAuftrag(int pIndex) {
     	try {
     		aFokusAuftrag = dieAuftragsListe.getAuftrag(pIndex);
@@ -71,7 +92,10 @@ public class Steuerung {
     	System.out.println("Fokus auf Fach: x=" + aFokusRegalFach.getPosX() + " y="+aFokusRegalFach.getPosY());
     	
     	if(aFokusAuftrag != null) {
-    		einlagern(aFokusAuftrag, aFokusRegalFach);
+    		if(aFokusAuftrag.getAuftragsArt().equals("Einlagerung"))
+    			einlagern(aFokusAuftrag, aFokusRegalFach);
+    		else if (aFokusAuftrag.getAuftragsArt().equals("Auslagerung"))
+    			auslagern(aFokusAuftrag, aFokusRegalFach);
     	}
     }
     public void resetFokusRegalFach() {
