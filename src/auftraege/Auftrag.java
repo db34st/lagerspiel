@@ -29,6 +29,10 @@ public class Auftrag {
 			System.out.println(e.getMessage());
 		}
     }
+    public Auftrag(String aAuftragsArt, int aBelohnung) {
+    	this.aAuftragsArt = aAuftragsArt;
+    	this.aBelohnung = aBelohnung;
+    }
 	public int getId() {
 		return aId;
 	}

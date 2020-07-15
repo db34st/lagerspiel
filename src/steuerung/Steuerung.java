@@ -83,6 +83,14 @@ public class Steuerung {
     		}
     	}
     }
+    public void verschrotten() {
+    	if(aFokusRegalFach != null) {
+    		aFokusRegalFach.setProdukt(null);
+    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Verschrotten", 500),false));
+    		dieGui.aktualisiereRegal(dasRegal);
+    		dieGui.aktualisiereBilanz(dieBilanz);
+    	}
+    }
     public void fokusiereAuftrag(int pIndex) {
     	try {
     		aFokusAuftrag = dieAuftragsListe.getAuftrag(pIndex);

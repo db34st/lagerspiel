@@ -43,7 +43,7 @@ public class Start {
 
 	private JFrame frame;
 	private Steuerung dieSteuerung;
-	JButton btnNeuerAuftrag;
+	JButton btnNeuerAuftrag, btnSchrott;
 	
 	int maxAnzahlAuftraege = 3;
 	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
@@ -67,7 +67,6 @@ public class Start {
 		});
 	}
 
-
 	public Start() {
 		initialize();
 		dieSteuerung = new Steuerung(this);
@@ -78,12 +77,21 @@ public class Start {
 		pBilanz.reset();
 		for (int i = 1; i < temp.length; i++) {
 			Auftrag a = pBilanz.elem().getAuftrag();
-			String  name = a.getProdukt().getProduktName(),
-					belohnung = Integer.toString(a.getBelohnung()),
-					art = a.getAuftragsArt().equals("Einlagerung") ? "/\\" : "\\/",
-					sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-			temp[i] = art + "   " + name + "  " + sign+belohnung;
+			if(a.getProdukt()!=null) {
+				String  name = a.getProdukt().getProduktName(),
+						belohnung = Integer.toString(a.getBelohnung()),
+						art = a.getAuftragsArt().equals("Einlagerung") ? "/\\" : "\\/",
+						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
+				temp[i] = art + "   " + name + "  " + sign+belohnung + " €";
+			}
+			else if(a.getAuftragsArt().equals("Verschrotten")){
+				String  name = "Verschrotten",
+						belohnung = Integer.toString(a.getBelohnung()),
+						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
+				temp[i] = name + "  " + sign+belohnung + " €";
+			}	
 			pBilanz.advance();
+			
 		}
 		pBilanz.reset();
 		listBilanz.setListData(temp);
@@ -200,7 +208,7 @@ public class Start {
 	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 719, 910);
+		frame.setBounds(100, 100, 750, 910);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel pnlTop = new JPanel();
@@ -297,7 +305,12 @@ public class Start {
 			}
 		});
 		pnlButtons.add(btnNeuerAuftrag);
-		JButton btnSchrott = new JButton("Verschrotten");
+		btnSchrott = new JButton("Verschrotten");
+		btnSchrott.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dieSteuerung.verschrotten();
+			}
+		});
 		pnlButtons.add(btnSchrott);
 		
 		JButton btnUmlagern = new JButton("Umlagern");
