@@ -7,13 +7,14 @@ public class Auftragsliste {
 		auftrag[0] = pAuftrag;
 		anzahl++;
 	}
-    public Auftrag getAuftragId(int pId) {
+    public Auftrag getAuftragById(int pId) {
     	for(int i = 0; i<3; i++)
-    		if(auftrag[i].getId() == pId)
+    		if(auftrag[i] != null && auftrag[i].getId() == pId)
     			return auftrag[i];
+    	System.out.println("getAuftragById: Id nicht gefunden!");
     	return null;
     }
-    public Auftrag getAuftragIndex(int pIndex) {
+    public Auftrag getAuftrag(int pIndex) {
     	return auftrag[pIndex];
     }
     public int getAnzahl() {
@@ -29,14 +30,22 @@ public class Auftragsliste {
     	}
     	anzahl++;
     }
-    public void entferneAuftrag(int pId) throws Exception{
-    	int tempAnzahl = anzahl; 
-    	for(int i = 0; i<3;i++) 
-    		if(auftrag[i].getId() == pId) {
+    public void entferneAuftrag(int pIndex) {
+    	if(auftrag[pIndex] != null) {
+    		auftrag[pIndex] = null;
+    		anzahl--;
+    	}
+    }
+    public void entferneAuftragById(int pId) throws Exception{
+    	boolean gefunden = false;
+    	for(int i = 0; i < 3; i++) {
+    		if(auftrag[i] != null && auftrag[i].getId() == pId) {
+    			gefunden = true;
     			auftrag[i] = null;
     			anzahl--;
     			break;
     		}
-    	if(anzahl == tempAnzahl) throw new Exception("Auftrag konnte nicht gelöscht werdne, da per Id nicht gefunden!");
+    	}
+    	if(!gefunden) throw new Exception("Fehler bei entferneAuftragById: Id nicht gefunden!");
     }
 }
