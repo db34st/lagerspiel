@@ -40,7 +40,7 @@ public class Steuerung {
     	if(pAuftrag.getProdukt().pruefeObEinlagerbar(pRegalFach.getPosX(), pRegalFach.getPosY(), 3)) {
     		try {
     			dieAuftragsListe.getAuftragById(pAuftrag.getId());	//Test ob Auftrag vorhanden
-    			pRegalFach.setProdukt(pAuftrag.getProdukt());
+    			pRegalFach.pushProdukt(pAuftrag.getProdukt());
     			Bilanzeintrag tempBilanzEintrag = new Bilanzeintrag(pAuftrag, true);
     			if(dieBilanz == null)
     				dieBilanz = new Bilanz(tempBilanzEintrag);
@@ -68,7 +68,7 @@ public class Steuerung {
     	if(name && attr1 && attr2) {
     		try {
 	    		dieAuftragsListe.getAuftragById(pAuftrag.getId());
-	    		pRegalFach.setProdukt(null);
+	    		pRegalFach.popProdukt();
 	    		dieBilanz.neuerEintrag(new Bilanzeintrag(pAuftrag, true));
 	    		dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
 	    		aFokusAuftrag = null;
@@ -85,7 +85,7 @@ public class Steuerung {
     }
     public void verschrotten() {
     	if(aFokusRegalFach != null) {
-    		aFokusRegalFach.setProdukt(null);
+    		aFokusRegalFach.popProdukt();
     		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Verschrotten", 500),false));
     		dieGui.aktualisiereRegal(dasRegal);
     		dieGui.aktualisiereBilanz(dieBilanz);

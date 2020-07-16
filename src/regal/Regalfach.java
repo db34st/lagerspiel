@@ -2,8 +2,9 @@ package regal;
 import produkte.*;
 public class Regalfach {
     int aPosX, aPosY;
-    Produkt aProdukt;
-
+    private Inhalt top;
+    int anzahl = 0;
+    
     public Regalfach(int aPosX, int aPosY){
         this.aPosX = aPosX;
         this.aPosY = aPosY;
@@ -14,10 +15,21 @@ public class Regalfach {
     public int getPosY(){
         return aPosY;
     }
-    public void setProdukt(Produkt aProdukt){
-        this.aProdukt = aProdukt;
+    public void pushProdukt(Produkt aProdukt){
+        if(anzahl < 3) {
+	    	Inhalt temp = new Inhalt();
+	        temp.aProdukt = aProdukt;
+	        temp.next = top;
+	        top = temp;
+	        anzahl++;
+        }
     }
     public Produkt getProdukt() {
-    	return aProdukt;
+    	if(top != null)
+    		return top.aProdukt;
+    	else return null;
+    }
+    public void popProdukt() {
+    	if(top != null) top = top.next;
     }
 }
