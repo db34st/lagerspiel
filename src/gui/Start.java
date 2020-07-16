@@ -48,11 +48,11 @@ public class Start {
 	
 	int maxAnzahlAuftraege = 3;
 	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
-	JLabel[] lblAuftragsArt = new JLabel[maxAnzahlAuftraege];
-	JLabel[] lblProduktName = new JLabel[maxAnzahlAuftraege];
-	JLabel[] lblProduktAttr1 = new JLabel[maxAnzahlAuftraege];
-	JLabel[] lblProduktAttr2 = new JLabel[maxAnzahlAuftraege];
-	JLabel[] lblBelohnung = new JLabel[maxAnzahlAuftraege];
+	JLabel[] lblAuftragsArt = new JLabel[maxAnzahlAuftraege],
+			 lblProduktName = new JLabel[maxAnzahlAuftraege],
+			 lblProduktAttr1 = new JLabel[maxAnzahlAuftraege],
+			 lblProduktAttr2 = new JLabel[maxAnzahlAuftraege],
+			 lblBelohnung = new JLabel[maxAnzahlAuftraege];
 	JButton[] btnRegalFach = new JButton[9];
 	JList<String> listBilanz;
 	public static void main(String[] args) {
