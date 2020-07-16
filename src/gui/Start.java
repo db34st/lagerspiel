@@ -89,7 +89,13 @@ public class Start {
 						belohnung = Integer.toString(a.getBelohnung()),
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
 				temp[i] = name + "  " + sign+belohnung + " €";
-			}	
+			}
+			else if(a.getAuftragsArt().equals("Umlagern")){
+				String  name = "Umlagern",
+						belohnung = Integer.toString(a.getBelohnung()),
+						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
+				temp[i] = name + "  " + sign+belohnung + " €";
+			}
 			pBilanz.advance();
 			
 		}
@@ -314,6 +320,16 @@ public class Start {
 		pnlButtons.add(btnSchrott);
 		
 		JButton btnUmlagern = new JButton("Umlagern");
+		btnUmlagern.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					dieSteuerung.umlagern(null);
+				}
+				catch (Exception exc) {
+					System.out.println("Fehler: " + exc.getMessage());
+				}
+			}
+		});
 		pnlButtons.add(btnUmlagern);
 		
 		JPanel pnlAuftraege = new JPanel();

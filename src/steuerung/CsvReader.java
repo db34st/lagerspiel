@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class CsvReader {
-	String csvFile="test.csv";
+	String csvFile="Leistungsnachweis.csv";
 	FileReader fr;
 	BufferedReader br;
 	int anzSpalten = 1;
