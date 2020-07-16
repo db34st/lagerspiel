@@ -135,6 +135,19 @@ public class Start {
 			}
 		}
 	}
+	public void setBtnNeuerAuftragEnabled(boolean b) {
+		btnNeuerAuftrag.setEnabled(b);
+	}
+	public void setBtnAbbruchAuftragEnabled(boolean b) {
+		btnAbbruchAuftrag.setEnabled(b);
+	}
+	public void setBtnSchrottEnabled(boolean b) {
+		btnSchrott.setEnabled(b);
+	}
+	public void setBtnUmlagernEnabled(boolean b) {
+		btnUmlagern.setEnabled(b);
+	}
+	
 	private void setBackground(JLabel lbl, JPanel pnl) {
 		switch(lbl.getText()) {
 			case "Weiﬂ":
@@ -205,7 +218,6 @@ public class Start {
 				break;
 		}
 	}
-	
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 878, 910);
@@ -309,7 +321,9 @@ public class Start {
 	}
 	private void initPnlButtons() {
 		pnlButtons = new JPanel();
+		
 		btnNeuerAuftrag = new JButton("Neuer Auftrag");
+		btnNeuerAuftrag.setPreferredSize(new Dimension(140,50));
 		btnNeuerAuftrag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.resetFokusAuftrag();
@@ -322,22 +336,27 @@ public class Start {
 		pnlButtons.add(btnNeuerAuftrag);
 		
 		btnAbbruchAuftrag = new JButton("Auftrag abbrechen");
+		btnAbbruchAuftrag.setPreferredSize(new Dimension(140,50));
 		btnAbbruchAuftrag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.brichAuftragAb();
 			}
 		});
+		btnAbbruchAuftrag.setEnabled(false);
 		pnlButtons.add(btnAbbruchAuftrag);
 		
 		btnSchrott = new JButton("Verschrotten");
+		btnSchrott.setPreferredSize(new Dimension(110,50));
 		btnSchrott.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.verschrotten();
 			}
 		});
+		btnSchrott.setEnabled(false);
 		pnlButtons.add(btnSchrott);
 		
 		btnUmlagern = new JButton("Umlagern");
+		btnUmlagern.setPreferredSize(new Dimension(110,50));
 		btnUmlagern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -348,6 +367,7 @@ public class Start {
 				}
 			}
 		});
+		btnUmlagern.setEnabled(false);
 		pnlButtons.add(btnUmlagern);
 		
 		pnlCenter.add(pnlButtons);
