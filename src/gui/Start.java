@@ -127,10 +127,12 @@ public class Start {
 		for(int i = 0; i < 9; i++) {
 			if(pRegal[i].getProdukt() != null) {
 				btnRegalFach[i].setText(pRegal[i].getProdukt().getProduktName()+';'+pRegal[i].getProdukt().getAttribut2());
+				btnRegalFach[i].setEnabled(true);
 				setBackground(btnRegalFach[i], pRegal[i].getProdukt().getAttribut1());
 			}
 			else {
 				btnRegalFach[i].setText("leerer Lagerplatz");
+				btnRegalFach[i].setEnabled(false);
 				btnRegalFach[i].setBackground(null);
 			}
 		}
@@ -261,6 +263,7 @@ public class Start {
 			btnRegalFach[n] = new JButton("Lagerplatz");
 			btnRegalFach[n].setPreferredSize(new Dimension(150, 150));
 			btnRegalFach[n].setText("leerer Lagerplatz");
+			btnRegalFach[n].setEnabled(false);
 			btnRegalFach[n].setBackground(null);
 			pnlCenter.add(btnRegalFach[n]);
 		}
