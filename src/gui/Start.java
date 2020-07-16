@@ -267,57 +267,48 @@ public class Start {
 			btnRegalFach[n].setBackground(null);
 			pnlCenter.add(btnRegalFach[n]);
 		}
-		btnRegalFach[0].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[0].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(0);
 			}
 		});
-		btnRegalFach[1].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(1);
 			}
 		});
-		btnRegalFach[2].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[2].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(2);
 			}
 		});
-		btnRegalFach[3].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[3].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(3);
 			}
 		});
-		btnRegalFach[4].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[4].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(4);
 			}
 		});
-		btnRegalFach[5].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[5].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(5);
 			}
 		});
-		btnRegalFach[6].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[6].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(6);
 			}
 		});
-		btnRegalFach[7].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[7].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(7);
 			}
 		});
-		btnRegalFach[8].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {				
+		btnRegalFach[8].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.fokusiereRegalFach(8);
 			}
 		});		
