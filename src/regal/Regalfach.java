@@ -15,13 +15,19 @@ public class Regalfach {
     public int getPosY(){
         return aPosY;
     }
+    public int getTiefe() {
+    	return 3 - anzahl;
+    }
     public void pushProdukt(Produkt aProdukt) throws Exception{
         if(anzahl < 3) {
 	    	Inhalt temp = new Inhalt();
 	        temp.aProdukt = aProdukt;
 	        temp.next = top;
 	        top = temp;
-	        anzahl++;
+	        if(aProdukt.getAttribut2().equals("Balken"))
+	        	anzahl = 3;
+	        else
+	        	anzahl++;
         }
         else throw new Exception("Regalfach ist schon voll!");
     }

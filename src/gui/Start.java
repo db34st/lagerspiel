@@ -137,6 +137,13 @@ public class Start {
 			}
 		}
 	}
+	public void setBtnRegalFachEnabled(boolean b, int i) {
+		btnRegalFach[i].setEnabled(b);
+	}
+	public void setBtnRegalFachEnabled(boolean b) {
+		for(int i = 0; i < 9; i++)
+			btnRegalFach[i].setEnabled(b);
+	}
 	public void setBtnNeuerAuftragEnabled(boolean b) {
 		btnNeuerAuftrag.setEnabled(b);
 	}

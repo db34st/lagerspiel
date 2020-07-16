@@ -15,5 +15,5 @@ public abstract class Produkt {
     public String getProduktName() {
     	return aProduktName;
     }
-    public abstract boolean pruefeObEinlagerbar(int posX, int posY, int regalTiefe);
+    public abstract void pruefeObEinlagerbar(int posX, int posY, int regalTiefe) throws Exception;
 }

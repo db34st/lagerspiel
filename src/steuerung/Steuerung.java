@@ -52,28 +52,28 @@ public class Steuerung {
     	}
     }
     private void einlagern(Auftrag pAuftrag, Regalfach pRegalFach){
-    	if(pAuftrag.getProdukt().pruefeObEinlagerbar(pRegalFach.getPosX(), pRegalFach.getPosY(), 3)) {
-    		try {
-    			dieAuftragsListe.getAuftragById(pAuftrag.getId());	//Test ob Auftrag vorhanden
-    			pRegalFach.pushProdukt(pAuftrag.getProdukt());
-    			Bilanzeintrag tempBilanzEintrag = new Bilanzeintrag(pAuftrag, true);
-    			if(dieBilanz == null)
-    				dieBilanz = new Bilanz(tempBilanzEintrag);
-    			else 
-    				dieBilanz.neuerEintrag(tempBilanzEintrag);
-    			dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
-    			
-    			resetFokusAuftrag();
-    			resetFokusRegalFach();
-    			
-    			dieGui.aktualisiereRegal(dasRegal);
-    			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
-    			dieGui.aktualisiereBilanz(dieBilanz);
-    		}
-    		catch (Exception e) {
-    			System.out.println("Fehler beim einlagern: "+e.getMessage());
-    		}    		
-    	}
+		try {
+			pAuftrag.getProdukt().pruefeObEinlagerbar(pRegalFach.getPosX(), pRegalFach.getPosY(), pRegalFach.getTiefe());
+			dieAuftragsListe.getAuftragById(pAuftrag.getId());	//Test ob Auftrag vorhanden
+			pRegalFach.pushProdukt(pAuftrag.getProdukt());
+			Bilanzeintrag tempBilanzEintrag = new Bilanzeintrag(pAuftrag, true);
+			if(dieBilanz == null)
+				dieBilanz = new Bilanz(tempBilanzEintrag);
+			else 
+				dieBilanz.neuerEintrag(tempBilanzEintrag);
+			dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
+			
+			resetFokusAuftrag();
+			resetFokusRegalFach();
+			
+			dieGui.aktualisiereRegal(dasRegal);
+			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
+			dieGui.aktualisiereBilanz(dieBilanz);
+		}
+		catch (Exception e) {
+			System.out.println("Fehler beim einlagern: "+e.getMessage());
+		}    		
+    	
     	modus = mode.leerlauf;
     }
     private void auslagern(Auftrag pAuftrag, Regalfach pRegalFach) {
@@ -124,12 +124,18 @@ public class Steuerung {
     		dieGui.setBtnSchrottEnabled(false);
     	}
     	else if(modus == mode.umlagern && ziel != null) {
-    		ziel.pushProdukt(aFokusRegalFach.getProdukt());
-    		aFokusRegalFach.popProdukt();
-    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Umlagern", 100), false));
-    		dieGui.aktualisiereRegal(dasRegal);
-    		dieGui.aktualisiereBilanz(dieBilanz);
-    		modus = mode.leerlauf;
+    		try {
+    			aFokusRegalFach.getProdukt().pruefeObEinlagerbar(ziel.getPosX(), ziel.getPosY(), ziel.getTiefe());
+	    		ziel.pushProdukt(aFokusRegalFach.getProdukt());
+	    		aFokusRegalFach.popProdukt();
+	    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Umlagern", 100), false));
+	    		dieGui.aktualisiereRegal(dasRegal);
+	    		dieGui.aktualisiereBilanz(dieBilanz);
+	    		modus = mode.leerlauf;
+    		}
+    		catch (Exception e) {
+    			System.out.println(e.getMessage());
+    		}
     	}
     	else throw new Exception("Fehler beim umlagern in Steuerung!");	
     }
@@ -144,6 +150,10 @@ public class Steuerung {
 			dieGui.setBtnSchrottEnabled(false);
 			dieGui.setBtnUmlagernEnabled(false);
 			dieGui.setBtnAbbruchAuftragEnabled(true);
+			for(int i = 0; i < 9; i++) {
+				if(dasRegal[i].getProdukt() == null)
+					dieGui.setBtnRegalFachEnabled(true, i);
+			}
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());
@@ -157,10 +167,12 @@ public class Steuerung {
     		einlagern(aFokusAuftrag, dasRegal[pRegalFach]);
     		dieGui.setBtnNeuerAuftragEnabled(true);
     		dieGui.setBtnAbbruchAuftragEnabled(false);
+    		dieGui.setBtnRegalFachEnabled(false);
     		break;
     	case auslagern:
     		auslagern(aFokusAuftrag, dasRegal[pRegalFach]);
     		dieGui.setBtnNeuerAuftragEnabled(true);
+    		dieGui.setBtnRegalFachEnabled(false);
     		break;
     	case leerlauf:
     		aFokusRegalFach = dasRegal[pRegalFach];
@@ -182,7 +194,6 @@ public class Steuerung {
     		}
     		break;
     	}
-    	
     }
     public void resetFokusAuftrag() {
     	aFokusAuftrag = null;

@@ -4,7 +4,8 @@ public class Holz extends Produkt{
         super(aAttribut1, aAttribut2);
         aProduktName = "Holz";
     }
-    public boolean pruefeObEinlagerbar(int posX, int posY, int regalTiefe){
-        return getAttribut2() != "Balken" || regalTiefe == 3;
+    public void pruefeObEinlagerbar(int posX, int posY, int regalTiefe) throws Exception{
+        if((getAttribut2().equals("Balken") || regalTiefe <= 0) && regalTiefe != 3)
+        	throw new Exception("Fehler beim einlagern: Holz");
     }
 }
