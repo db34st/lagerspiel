@@ -127,7 +127,7 @@ public class Start {
 	public void aktualisiereRegal(Regalfach pRegal[]) {
 		for(int i = 0; i < 9; i++) {
 			if(pRegal[i].getProdukt() != null) {
-				btnRegalFach[i].setText(pRegal[i].getProdukt().getProduktName()+';'+pRegal[i].getProdukt().getAttribut2());
+				btnRegalFach[i].setText(pRegal[i].getProdukt().getProduktName()+" - "+pRegal[i].getProdukt().getAttribut2()+" [" + (3-pRegal[i].getTiefe()) +"/3]");
 				btnRegalFach[i].setEnabled(true);
 				setBackground(btnRegalFach[i], pRegal[i].getProdukt().getAttribut1());
 			}
