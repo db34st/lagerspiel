@@ -15,7 +15,7 @@ public class Regalfach {
     public int getPosY(){
         return aPosY;
     }
-    public void pushProdukt(Produkt aProdukt){
+    public void pushProdukt(Produkt aProdukt) throws Exception{
         if(anzahl < 3) {
 	    	Inhalt temp = new Inhalt();
 	        temp.aProdukt = aProdukt;
@@ -23,13 +23,18 @@ public class Regalfach {
 	        top = temp;
 	        anzahl++;
         }
+        else throw new Exception("Regalfach ist schon voll!");
     }
     public Produkt getProdukt() {
     	if(top != null)
     		return top.aProdukt;
     	else return null;
     }
-    public void popProdukt() {
-    	if(top != null) top = top.next;
+    public void popProdukt() throws Exception {
+    	if(top != null) {
+    		top = top.next;
+    		anzahl--;
+    	}
+    	else throw new Exception("Regalfach leer!");
     }
 }
