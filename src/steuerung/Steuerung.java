@@ -36,6 +36,24 @@ public class Steuerung {
 	    }
     	return dieAuftragsListe;
     }
+    public void brichAuftragAb() {
+    	if(aFokusAuftrag != null) {
+    		try {
+    			dieAuftragsListe.entferneAuftragById(aFokusAuftrag.getId());
+    			Auftrag tempAuftrag = new Auftrag("Abbruch", aFokusAuftrag.getBelohnung());
+    			Bilanzeintrag tempBilanzEintrag = new Bilanzeintrag(tempAuftrag,false);
+    			if(dieBilanz == null)
+    				dieBilanz = new Bilanz(tempBilanzEintrag);
+    			else 
+    				dieBilanz.neuerEintrag(tempBilanzEintrag);
+    			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
+    			dieGui.aktualisiereBilanz(dieBilanz);
+    		}
+    		catch (Exception e) {
+    			System.out.println("Fehler beim AuftragsAbbruch: "+e.getMessage());
+    		}
+    	}
+    }
     private void einlagern(Auftrag pAuftrag, Regalfach pRegalFach){
     	if(pAuftrag.getProdukt().pruefeObEinlagerbar(pRegalFach.getPosX(), pRegalFach.getPosY(), 3)) {
     		try {

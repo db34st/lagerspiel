@@ -84,14 +84,8 @@ public class Start {
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
 				temp[i] = art + "   " + name + "  " + sign+belohnung + " €";
 			}
-			else if(a.getAuftragsArt().equals("Verschrotten")){
-				String  name = "Verschrotten",
-						belohnung = Integer.toString(a.getBelohnung()),
-						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-				temp[i] = name + "  " + sign+belohnung + " €";
-			}
-			else if(a.getAuftragsArt().equals("Umlagern")){
-				String  name = "Umlagern",
+			else{
+				String  name = a.getAuftragsArt(),
 						belohnung = Integer.toString(a.getBelohnung()),
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
 				temp[i] = name + "  " + sign+belohnung + " €";
@@ -317,6 +311,14 @@ public class Start {
 				dieSteuerung.verschrotten();
 			}
 		});
+		
+		JButton btnAbbruchAuftrag = new JButton("Auftrag abbrechen");
+		btnAbbruchAuftrag.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dieSteuerung.brichAuftragAb();
+			}
+		});
+		pnlButtons.add(btnAbbruchAuftrag);
 		pnlButtons.add(btnSchrott);
 		
 		JButton btnUmlagern = new JButton("Umlagern");
