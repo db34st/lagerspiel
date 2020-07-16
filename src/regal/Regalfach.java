@@ -1,4 +1,5 @@
 package regal;
+import auftraege.Auftrag;
 import produkte.*;
 public class Regalfach {
     int aPosX, aPosY;
@@ -42,5 +43,15 @@ public class Regalfach {
     		anzahl--;
     	}
     	else throw new Exception("Regalfach leer!");
+    }
+    public void pruefeObPassenderAuftrag(Auftrag pAuftrag) throws Exception{
+    	String tName = top.aProdukt.getProduktName(),
+    		   pName = pAuftrag.getProdukt().getProduktName(),
+    		   tAttr1 = top.aProdukt.getAttribut1(),
+    		   pAttr1 = pAuftrag.getProdukt().getAttribut1(),
+    		   tAttr2 = top.aProdukt.getAttribut2(),
+    		   pAttr2 = pAuftrag.getProdukt().getAttribut2();
+    	if(!tName.equals(pName) || !tAttr1.equals(pAttr1) || !tAttr2.equals(pAttr2))
+    		throw new Exception();    	
     }
 }

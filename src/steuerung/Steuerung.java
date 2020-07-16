@@ -142,7 +142,7 @@ public class Steuerung {
     public void fokusiereAuftrag(int pIndex) {
     	try {
     		aFokusAuftrag = dieAuftragsListe.getAuftrag(pIndex);
-    		if(aFokusAuftrag.getAuftragsArt().equals("Einlagerung")) 
+    		if(aFokusAuftrag.getAuftragsArt().equals("Einlagerung"))
     			modus = mode.einlagern;
     		else if(aFokusAuftrag.getAuftragsArt().equals("Auslagerung"))
     			modus = mode.auslagern;
@@ -151,8 +151,19 @@ public class Steuerung {
 			dieGui.setBtnUmlagernEnabled(false);
 			dieGui.setBtnAbbruchAuftragEnabled(true);
 			for(int i = 0; i < 9; i++) {
-				if(dasRegal[i].getProdukt() == null)
-					dieGui.setBtnRegalFachEnabled(true, i);
+				if(modus == mode.einlagern) {
+					try {
+						//probiert alle Regale durch, nur die, die möglich sind, werden auf eneabled geschaltet
+						aFokusAuftrag.getProdukt().pruefeObEinlagerbar(dasRegal[i].getPosX(), dasRegal[i].getPosY(), dasRegal[i].getTiefe());
+						dieGui.setBtnRegalFachEnabled(true, i);
+					} catch(Exception e) {}
+				}
+				else if(modus == mode.auslagern) {
+					try {
+						dasRegal[i].pruefeObPassenderAuftrag(aFokusAuftrag);
+						dieGui.setBtnRegalFachEnabled(true, i);
+					} catch (Exception e) { }
+				}
 			}
     	}
     	catch (Exception e) {

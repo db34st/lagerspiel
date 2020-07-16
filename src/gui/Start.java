@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 
 import auftraege.*;
 import bilanz.*;
@@ -266,6 +267,7 @@ public class Start {
 		pnlLeft.add(listBilanz);
 	}
 	private void initBtnRegalFach() {
+		UIManager.put("Button.disabledText", new ColorUIResource(Color.BLACK));
 		for(int n = 0; n < 9; n++) {
 			btnRegalFach[n] = new JButton("Lagerplatz");
 			btnRegalFach[n].setPreferredSize(new Dimension(150, 150));
