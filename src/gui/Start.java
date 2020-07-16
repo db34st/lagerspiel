@@ -43,7 +43,8 @@ public class Start {
 
 	private JFrame frame;
 	private Steuerung dieSteuerung;
-	JButton btnNeuerAuftrag, btnSchrott;
+	private JButton btnNeuerAuftrag, btnAbbruchAuftrag, btnSchrott, btnUmlagern;
+	private JPanel pnlLeft, pnlCenter, pnlButtons, pnlAuftraege;
 	
 	int maxAnzahlAuftraege = 3;
 	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
@@ -90,8 +91,7 @@ public class Start {
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
 				temp[i] = name + "  " + sign+belohnung + " €";
 			}
-			pBilanz.advance();
-			
+			pBilanz.advance();	
 		}
 		pBilanz.reset();
 		listBilanz.setListData(temp);
@@ -208,7 +208,7 @@ public class Start {
 	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 750, 910);
+		frame.setBounds(100, 100, 878, 910);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel pnlTop = new JPanel();
@@ -219,7 +219,7 @@ public class Start {
 		lblNewLabel_2.setFont(new Font("Arial", Font.PLAIN, 50));
 		pnlTop.add(lblNewLabel_2);
 		
-		JPanel pnlCenter = new JPanel();
+		pnlCenter = new JPanel();
 		pnlCenter.setOpaque(false);
 		pnlCenter.setSize(new Dimension(300, 300));
 		pnlCenter.setMinimumSize(new Dimension(300, 300));
@@ -227,7 +227,24 @@ public class Start {
 		pnlCenter.setPreferredSize(new Dimension(300, 300));
 		frame.getContentPane().add(pnlCenter, BorderLayout.CENTER);
 		
-
+		initBilanzListe();
+		initBtnRegalFach();
+		initPnlButtons();
+		initPnlAuftraege();
+	}
+	private void initBilanzListe() {
+		pnlLeft = new JPanel();
+		frame.getContentPane().add(pnlLeft, BorderLayout.WEST);
+		pnlLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pnlLeft.setPreferredSize(new Dimension(250, 150));
+		listBilanz = new JList<String>();
+		String[] temp = new String[1];
+		temp[0] = "Bilanz: 0 €";
+		listBilanz.setListData(temp);
+		listBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
+		pnlLeft.add(listBilanz);
+	}
+	private void initBtnRegalFach() {
 		for(int n = 0; n < 9; n++) {
 			btnRegalFach[n] = new JButton("Lagerplatz");
 			btnRegalFach[n].setPreferredSize(new Dimension(150, 150));
@@ -235,7 +252,6 @@ public class Start {
 			btnRegalFach[n].setBackground(null);
 			pnlCenter.add(btnRegalFach[n]);
 		}
-		
 		btnRegalFach[0].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {				
@@ -290,10 +306,9 @@ public class Start {
 				dieSteuerung.fokusiereRegalFach(8);
 			}
 		});		
-		
-		JPanel pnlButtons = new JPanel();
-		pnlCenter.add(pnlButtons);
-		
+	}
+	private void initPnlButtons() {
+		pnlButtons = new JPanel();
 		btnNeuerAuftrag = new JButton("Neuer Auftrag");
 		btnNeuerAuftrag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -305,23 +320,24 @@ public class Start {
 			}
 		});
 		pnlButtons.add(btnNeuerAuftrag);
-		btnSchrott = new JButton("Verschrotten");
-		btnSchrott.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dieSteuerung.verschrotten();
-			}
-		});
 		
-		JButton btnAbbruchAuftrag = new JButton("Auftrag abbrechen");
+		btnAbbruchAuftrag = new JButton("Auftrag abbrechen");
 		btnAbbruchAuftrag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.brichAuftragAb();
 			}
 		});
 		pnlButtons.add(btnAbbruchAuftrag);
+		
+		btnSchrott = new JButton("Verschrotten");
+		btnSchrott.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dieSteuerung.verschrotten();
+			}
+		});
 		pnlButtons.add(btnSchrott);
 		
-		JButton btnUmlagern = new JButton("Umlagern");
+		btnUmlagern = new JButton("Umlagern");
 		btnUmlagern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -334,7 +350,10 @@ public class Start {
 		});
 		pnlButtons.add(btnUmlagern);
 		
-		JPanel pnlAuftraege = new JPanel();
+		pnlCenter.add(pnlButtons);
+	}
+	private void initPnlAuftraege() {
+		pnlAuftraege = new JPanel();
 		pnlAuftraege.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		pnlCenter.add(pnlAuftraege);
 		pnlAuftraege.setFont(new Font("Tahoma", Font.PLAIN, 36));
@@ -408,26 +427,5 @@ public class Start {
 			lblAuftragsArt[n].setFont(f);
 			pnlAuftrag[n].add(lblAuftragsArt[n]);
 		}
-		
-		
-		JPanel pnlBottom = new JPanel();
-		pnlBottom.setAutoscrolls(true);
-		pnlBottom.setBorder(null);
-		pnlBottom.setSize(new Dimension(50, 50));
-		pnlBottom.setMinimumSize(new Dimension(50, 50));
-		pnlBottom.setPreferredSize(new Dimension(50, 50));
-		frame.getContentPane().add(pnlBottom, BorderLayout.SOUTH);
-		
-		JPanel pnlLeft = new JPanel();
-		frame.getContentPane().add(pnlLeft, BorderLayout.WEST);
-		pnlLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		listBilanz = new JList<String>();
-		String[] temp = new String[1];
-		temp[0] = "Bilanz: 0 €";
-		listBilanz.setListData(temp);
-		listBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
-		pnlLeft.add(listBilanz);
 	}
-
 }
