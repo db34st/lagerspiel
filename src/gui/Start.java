@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -46,6 +49,9 @@ public class Start {
 	private Steuerung dieSteuerung;
 	private JButton btnNeuerAuftrag, btnAbbruchAuftrag, btnSchrott, btnUmlagern;
 	private JPanel pnlLeft, pnlCenter, pnlButtons, pnlAuftraege;
+	private auftrag fokusAuftrag = null;
+	private regal fokusRegalFach = null;
+	
 	
 	int maxAnzahlAuftraege = 3;
 	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
@@ -399,31 +405,60 @@ public class Start {
 		pnlAuftrag[0].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 4));
-				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				dieSteuerung.fokusiereAuftrag(0);
-				System.out.println("Fokus Auftrag1");
+				if(fokusAuftrag != auftrag.a0) {
+					pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+					pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					fokusAuftrag = auftrag.a0;
+					dieSteuerung.fokusiereAuftrag(0);
+					System.out.println("Fokus Auftrag0");
+				}
+				else {
+					dieSteuerung.resetFokusAuftrag();
+					fokusAuftrag = null;
+					pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					System.out.println("Kein Fokus Auftrag0");
+				}
 			}
 		});
 		pnlAuftrag[1].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 4));
-				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				dieSteuerung.fokusiereAuftrag(1);
-				System.out.println("Fokus Auftrag2");
+				if(fokusAuftrag != auftrag.a1) {
+					pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					fokusAuftrag = auftrag.a1;
+					dieSteuerung.fokusiereAuftrag(1);
+					System.out.println("Fokus Auftrag1");
+				}
+				else {
+					dieSteuerung.resetFokusAuftrag();
+					fokusAuftrag = null;
+					pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					System.out.println("Kein Fokus Auftrag1");
+				}
+				
 			}
 		});
 		pnlAuftrag[2].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-				pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 4));
-				dieSteuerung.fokusiereAuftrag(2);
-				System.out.println("Fokus Auftrag3");
+				if(fokusAuftrag != auftrag.a2) {
+					pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 4));
+					fokusAuftrag = auftrag.a2;
+					dieSteuerung.fokusiereAuftrag(2);
+					System.out.println("Fokus Auftrag2");
+				}
+				else {
+					dieSteuerung.resetFokusAuftrag();
+					fokusAuftrag = null;
+					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
+					System.out.println("Kein Fokus Auftrag2");
+				}
+				
 			}
 		});
 
@@ -452,3 +487,20 @@ public class Start {
 		}
 	}
 }
+enum auftrag{
+	a0,
+	a1,
+	a2
+}
+enum regal{
+	r0,
+	r1,
+	r2,
+	r3,
+	r4,
+	r5,
+	r6,
+	r7,
+	r8
+}
+
