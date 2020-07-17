@@ -1,4 +1,8 @@
 package auftraege;
+
+import enums.ursache;
+import exceptions.AuftragsException;
+
 public class Auftragsliste {
 	private Auftrag[] auftrag = new Auftrag[3];
 	int anzahl = 0;
@@ -7,12 +11,11 @@ public class Auftragsliste {
 		auftrag[0] = pAuftrag;
 		anzahl++;
 	}
-    public Auftrag getAuftragById(int pId) {
+    public Auftrag getAuftragById(int pId) throws AuftragsException{
     	for(int i = 0; i<3; i++)
     		if(auftrag[i] != null && auftrag[i].getId() == pId)
     			return auftrag[i];
-    	System.out.println("getAuftragById: Id nicht gefunden!");
-    	return null;
+    	throw new AuftragsException(ursache.idNichtGefunden);
     }
     public Auftrag getAuftrag(int pIndex) {
     	return auftrag[pIndex];
@@ -20,8 +23,9 @@ public class Auftragsliste {
     public int getAnzahl() {
     	return anzahl;
     }
-    public void neuerAuftrag(Auftrag pAuftrag) throws Exception {
-    	if(anzahl > 3) throw new Exception("Es sind nur 3 Aufträge gleichzeitig möglich!");
+    public void neuerAuftrag(Auftrag pAuftrag) throws AuftragsException {
+    	if(anzahl > 3) 
+    		throw new AuftragsException(ursache.maxDreiAuftraege);
     	for(int i = 0; i<3;i++) {
     		if(auftrag[i] == null) {
     			auftrag[i] = pAuftrag;
@@ -36,7 +40,7 @@ public class Auftragsliste {
     		anzahl--;
     	}
     }
-    public void entferneAuftragById(int pId) throws Exception{
+    public void entferneAuftragById(int pId) throws AuftragsException{
     	boolean gefunden = false;
     	for(int i = 0; i < 3; i++) {
     		if(auftrag[i] != null && auftrag[i].getId() == pId) {
@@ -46,6 +50,7 @@ public class Auftragsliste {
     			break;
     		}
     	}
-    	if(!gefunden) throw new Exception("Fehler bei entferneAuftragById: Id nicht gefunden!");
+    	if(!gefunden)
+    		throw new AuftragsException(ursache.idNichtGefunden);
     }
 }

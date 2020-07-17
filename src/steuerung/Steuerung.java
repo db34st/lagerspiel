@@ -29,7 +29,7 @@ public class Steuerung {
 	    	else 
 	    		dieAuftragsListe.neuerAuftrag(new Auftrag(rAuftrag));
     	}
-	    catch (Exception e) {
+	    catch (AuftragsException e) {
 	    	System.out.println(e.getMessage());
 	    }
     	return dieAuftragsListe;
@@ -47,8 +47,8 @@ public class Steuerung {
     			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
     			dieGui.aktualisiereBilanz(dieBilanz);
     		}
-    		catch (Exception e) {
-    			System.out.println("Fehler beim AuftragsAbbruch: "+e.getMessage());
+    		catch (AuftragsException e) {
+    			System.out.println(e.getMessage());
     		}
     	}
     }
@@ -71,7 +71,7 @@ public class Steuerung {
 			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
 			dieGui.aktualisiereBilanz(dieBilanz);
 		}
-		catch (Exception e) {
+		catch (AuftragsException | RegalException e) {
 			System.out.println(e.getMessage());
 		}    		
     	
@@ -96,8 +96,8 @@ public class Steuerung {
 				dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
 				dieGui.aktualisiereBilanz(dieBilanz);
     		}
-    		catch (Exception e) {
-    			System.out.println("Fehler beim einlagern: "+e.getMessage());
+    		catch (AuftragsException | RegalException e) {
+    			System.out.println(e.getMessage());
     		}
     	}
     	modus = mode.leerlauf;
@@ -114,8 +114,8 @@ public class Steuerung {
 	    		dieGui.setBtnSchrottEnabled(false);
 	    	}
     	}
-    	catch (Exception e) {
-    		System.out.println("Fehler beim einlagern: "+e.getMessage());
+    	catch (RegalException e) {
+    		System.out.println(e.getMessage());
     	}
     	modus = mode.leerlauf;
     }
@@ -142,7 +142,7 @@ public class Steuerung {
 		    		dieGui.aktualisiereBilanz(dieBilanz);
 		    		modus = mode.leerlauf;
 	    		}
-	    		catch (Exception e) {
+	    		catch (RegalException e) {
 	    			System.out.println(e.getMessage());
 	    		}
     		}
@@ -160,42 +160,35 @@ public class Steuerung {
     			modus = mode.leerlauf;
     		}
     	}
-    	else throw new Exception("Fehler beim umlagern in Steuerung!");	
+    	else throw new Exception("Fehler beim modus umlagern in Steuerung!");	
     }
     public void fokusiereAuftrag(int pIndex) {
-    	try {
-    		aFokusAuftrag = dieAuftragsListe.getAuftrag(pIndex);
-    		if(aFokusAuftrag.getAuftragsArt().equals("Einlagerung"))
-    			modus = mode.einlagern;
-    		else if(aFokusAuftrag.getAuftragsArt().equals("Auslagerung"))
-    			modus = mode.auslagern;
-    		dieGui.setBtnNeuerAuftragEnabled(false);
-			dieGui.setBtnSchrottEnabled(false);
-			dieGui.setBtnUmlagernEnabled(false);
-			dieGui.setBtnAbbruchAuftragEnabled(true);
-			for(int i = 0; i < 9; i++) {
-				if(modus == mode.einlagern) {
-					try {
-						//probiert alle Regale durch, nur die, die möglich sind, werden auf eneabled geschaltet
-						aFokusAuftrag.getProdukt().pruefeObEinlagerbar(dasRegal[i].getPosX(), dasRegal[i].getPosY(), dasRegal[i].getTiefe());
-						dieGui.setBtnRegalFachEnabled(true, i);
-					} catch(Exception e) {}
-				}
-				else if(modus == mode.auslagern) {
-					try {
-						dasRegal[i].pruefeObPassenderAuftrag(aFokusAuftrag);
-						dieGui.setBtnRegalFachEnabled(true, i);
-					} catch (Exception e) { }
-				}
+		aFokusAuftrag = dieAuftragsListe.getAuftrag(pIndex);
+		if(aFokusAuftrag.getAuftragsArt().equals("Einlagerung"))
+			modus = mode.einlagern;
+		else if(aFokusAuftrag.getAuftragsArt().equals("Auslagerung"))
+			modus = mode.auslagern;
+		dieGui.setBtnNeuerAuftragEnabled(false);
+		dieGui.setBtnSchrottEnabled(false);
+		dieGui.setBtnUmlagernEnabled(false);
+		dieGui.setBtnAbbruchAuftragEnabled(true);
+		for(int i = 0; i < 9; i++) {
+			if(modus == mode.einlagern) {
+				try {
+					//probiert alle Regale durch, nur die, die möglich sind, werden auf eneabled geschaltet
+					aFokusAuftrag.getProdukt().pruefeObEinlagerbar(dasRegal[i].getPosX(), dasRegal[i].getPosY(), dasRegal[i].getTiefe());
+					dieGui.setBtnRegalFachEnabled(true, i);
+				} catch(RegalException e) {}
 			}
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
+			else if(modus == mode.auslagern) {
+				try {
+					dasRegal[i].pruefeObPassenderAuftrag(aFokusAuftrag);
+					dieGui.setBtnRegalFachEnabled(true, i);
+				} catch (AuftragsException e) { }
+			}
+		}
     }
     public void fokusiereRegalFach(int pRegalFach) {
-    	
-    	System.out.println("Fokus auf Fach: x=" + dasRegal[pRegalFach].getPosX() + " y="+dasRegal[pRegalFach].getPosY());
     	switch (modus) {
     	case einlagern:
     		einlagern(aFokusAuftrag, dasRegal[pRegalFach]);

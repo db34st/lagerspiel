@@ -1,6 +1,6 @@
 package produkte;
 
-import exceptions.EinlagerException;
+import exceptions.RegalException;
 
 public abstract class Produkt {
     private String aAttribut1, aAttribut2;
@@ -18,5 +18,5 @@ public abstract class Produkt {
     public String getProduktName() {
     	return aProduktName;
     }
-    public abstract void pruefeObEinlagerbar(int posX, int posY, int regalTiefe) throws EinlagerException;
+    public abstract void pruefeObEinlagerbar(int posX, int posY, int regalTiefe) throws RegalException;
 }

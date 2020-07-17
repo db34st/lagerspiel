@@ -2,7 +2,11 @@ package enums;
 
 public enum ursache {
 	schonVoll,
-	nochLeer,
+	regalLeer,
 	schwererSteinMussUnten,
-	holzBalkenBrauchtDrei
+	holzBalkenBrauchtDrei,
+	
+	idNichtGefunden,
+	maxDreiAuftraege,
+	nichtPassenderAuftrag
 }

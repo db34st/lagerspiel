@@ -1,8 +1,10 @@
 package regal;
 import auftraege.Auftrag;
 import produkte.*;
-import exceptions.*;
+
 import enums.*;
+import exceptions.AuftragsException;
+import exceptions.RegalException;
 public class Regalfach {
     int aPosX, aPosY;
     private Inhalt top;
@@ -21,7 +23,7 @@ public class Regalfach {
     public int getTiefe() {
     	return 3 - anzahl;
     }
-    public void pushProdukt(Produkt aProdukt) throws Exception{
+    public void pushProdukt(Produkt aProdukt) throws RegalException{
         if(anzahl < 3) {
 	    	Inhalt temp = new Inhalt();
 	        temp.aProdukt = aProdukt;
@@ -33,14 +35,14 @@ public class Regalfach {
 	        	anzahl++;
         }
         else
-        	throw new EinlagerException(ursache.holzBalkenBrauchtDrei);
+        	throw new RegalException(ursache.holzBalkenBrauchtDrei);
     }
     public Produkt getProdukt() {
     	if(top != null)
     		return top.aProdukt;
     	else return null;
     }
-    public void popProdukt() throws Exception {
+    public void popProdukt() throws RegalException {
     	if(top != null) {
     		if(top.aProdukt.getAttribut2().equals("Balken"))
     			anzahl = 0;
@@ -49,9 +51,9 @@ public class Regalfach {
     		top = top.next;
     	}
     	else
-    		throw new EinlagerException(ursache.schonVoll);
+    		throw new RegalException(ursache.schonVoll);
     }
-    public void pruefeObPassenderAuftrag(Auftrag pAuftrag) throws Exception{
+    public void pruefeObPassenderAuftrag(Auftrag pAuftrag) throws AuftragsException{
     	String tName = top.aProdukt.getProduktName(),
     		   pName = pAuftrag.getProdukt().getProduktName(),
     		   tAttr1 = top.aProdukt.getAttribut1(),
@@ -59,6 +61,6 @@ public class Regalfach {
     		   tAttr2 = top.aProdukt.getAttribut2(),
     		   pAttr2 = pAuftrag.getProdukt().getAttribut2();
     	if(!tName.equals(pName) || !tAttr1.equals(pAttr1) || !tAttr2.equals(pAttr2))
-    		throw new Exception();
+    		throw new AuftragsException(ursache.nichtPassenderAuftrag);
     }
 }

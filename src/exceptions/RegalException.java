@@ -1,17 +1,15 @@
 package exceptions;
 import enums.*;
 
-public class EinlagerException extends Exception{
-	ursache u;
-	String errMessage = "Fehler beim Einlagern: ";
-	public EinlagerException(ursache u) {
+public class RegalException extends Exception{
+	String errMessage = "Fehler im Regal: ";
+	public RegalException(ursache u) {
 		super();
-		this.u = u;
 		switch(u) {
 		case schonVoll:
 			errMessage += "Regalfach ist bereits voll!";
 			break;
-		case nochLeer:
+		case regalLeer:
 			errMessage += "Regalfach ist leer!";
 			break;
 		case schwererSteinMussUnten:
