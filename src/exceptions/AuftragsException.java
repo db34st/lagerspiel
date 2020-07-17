@@ -1,10 +1,10 @@
 package exceptions;
 
-import enums.ursache;
+import enums.Ursache;
 
 public class AuftragsException extends Exception{
 	String errMessage = "Auftragsfehler: ";
-	public AuftragsException(ursache u) {
+	public AuftragsException(Ursache u) {
 		super();
 		switch (u) {
 		case idNichtGefunden:

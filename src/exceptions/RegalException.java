@@ -3,7 +3,7 @@ import enums.*;
 
 public class RegalException extends Exception{
 	String errMessage = "Fehler im Regal: ";
-	public RegalException(ursache u) {
+	public RegalException(Ursache u) {
 		super();
 		switch(u) {
 		case schonVoll:

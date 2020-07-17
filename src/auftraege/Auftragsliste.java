@@ -1,6 +1,6 @@
 package auftraege;
 
-import enums.ursache;
+import enums.Ursache;
 import exceptions.AuftragsException;
 
 public class Auftragsliste {
@@ -15,7 +15,7 @@ public class Auftragsliste {
     	for(int i = 0; i<3; i++)
     		if(auftrag[i] != null && auftrag[i].getId() == pId)
     			return auftrag[i];
-    	throw new AuftragsException(ursache.idNichtGefunden);
+    	throw new AuftragsException(Ursache.idNichtGefunden);
     }
     public Auftrag getAuftrag(int pIndex) {
     	return auftrag[pIndex];
@@ -25,7 +25,7 @@ public class Auftragsliste {
     }
     public void neuerAuftrag(Auftrag pAuftrag) throws AuftragsException {
     	if(anzahl > 3) 
-    		throw new AuftragsException(ursache.maxDreiAuftraege);
+    		throw new AuftragsException(Ursache.maxDreiAuftraege);
     	for(int i = 0; i<3;i++) {
     		if(auftrag[i] == null) {
     			auftrag[i] = pAuftrag;
@@ -51,6 +51,6 @@ public class Auftragsliste {
     		}
     	}
     	if(!gefunden)
-    		throw new AuftragsException(ursache.idNichtGefunden);
+    		throw new AuftragsException(Ursache.idNichtGefunden);
     }
 }

@@ -1,6 +1,6 @@
 package produkte;
 
-import enums.ursache;
+import enums.Ursache;
 import exceptions.RegalException;
 
 public class Holz extends Produkt{
@@ -10,8 +10,8 @@ public class Holz extends Produkt{
     }
     public void pruefeObEinlagerbar(int posX, int posY, int regalTiefe) throws RegalException{
     	if(regalTiefe <=0)
-    		throw new RegalException(ursache.schonVoll);
+    		throw new RegalException(Ursache.schonVoll);
     	if(getAttribut2().equals("Balken") && regalTiefe != 3)
-    		throw new RegalException(ursache.holzBalkenBrauchtDrei);
+    		throw new RegalException(Ursache.holzBalkenBrauchtDrei);
     }
 }

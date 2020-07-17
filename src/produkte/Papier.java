@@ -1,6 +1,6 @@
 package produkte;
 
-import enums.ursache;
+import enums.Ursache;
 import exceptions.RegalException;
 
 public class Papier extends Produkt{
@@ -10,6 +10,6 @@ public class Papier extends Produkt{
     }
     public void pruefeObEinlagerbar(int posX, int posY, int regalTiefe) throws RegalException{ 
     	if(regalTiefe <= 0)
-    		throw new RegalException(ursache.schonVoll);
+    		throw new RegalException(Ursache.schonVoll);
     }
 }

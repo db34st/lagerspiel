@@ -35,7 +35,7 @@ public class Regalfach {
 	        	anzahl++;
         }
         else
-        	throw new RegalException(ursache.holzBalkenBrauchtDrei);
+        	throw new RegalException(Ursache.holzBalkenBrauchtDrei);
     }
     public Produkt getProdukt() {
     	if(top != null)
@@ -51,7 +51,7 @@ public class Regalfach {
     		top = top.next;
     	}
     	else
-    		throw new RegalException(ursache.schonVoll);
+    		throw new RegalException(Ursache.schonVoll);
     }
     public void pruefeObPassenderAuftrag(Auftrag pAuftrag) throws AuftragsException{
     	String tName = top.aProdukt.getProduktName(),
@@ -61,6 +61,6 @@ public class Regalfach {
     		   tAttr2 = top.aProdukt.getAttribut2(),
     		   pAttr2 = pAuftrag.getProdukt().getAttribut2();
     	if(!tName.equals(pName) || !tAttr1.equals(pAttr1) || !tAttr2.equals(pAttr2))
-    		throw new AuftragsException(ursache.nichtPassenderAuftrag);
+    		throw new AuftragsException(Ursache.nichtPassenderAuftrag);
     }
 }
