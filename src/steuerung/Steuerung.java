@@ -2,6 +2,7 @@ package steuerung;
 import regal.*;
 import auftraege.*;
 import bilanz.*;
+import enums.AuftragsArt;
 import exceptions.*;
 import gui.*;
 import produkte.*;
@@ -21,24 +22,19 @@ public class Steuerung {
         for(int n=0;n<9;n++)
 			dasRegal[n] = new Regalfach(n%3, n/3);
 	}
-    public Auftragsliste neuerAuftrag() {
+    public Auftragsliste neuerAuftrag() throws AuftragsException{
     	String[] rAuftrag = derScanner.getNaechsteZeile();
-	    try {
 	    	if(dieAuftragsListe == null) 
 	    		dieAuftragsListe = new Auftragsliste(new Auftrag(rAuftrag));
 	    	else 
 	    		dieAuftragsListe.neuerAuftrag(new Auftrag(rAuftrag));
-    	}
-	    catch (AuftragsException e) {
-	    	System.out.println(e.getMessage());
-	    }
     	return dieAuftragsListe;
     }
     public void brichAuftragAb() {
     	if(aFokusAuftrag != null) {
     		try {
     			dieAuftragsListe.entferneAuftragById(aFokusAuftrag.getId());
-    			Auftrag tempAuftrag = new Auftrag("Abbruch", aFokusAuftrag.getBelohnung());
+    			Auftrag tempAuftrag = new Auftrag(AuftragsArt.abbruch, aFokusAuftrag.getBelohnung());
     			Bilanzeintrag tempBilanzEintrag = new Bilanzeintrag(tempAuftrag,false);
     			if(dieBilanz == null)
     				dieBilanz = new Bilanz(tempBilanzEintrag);
@@ -106,7 +102,7 @@ public class Steuerung {
     	try {
 	    	if(aFokusRegalFach != null) {
 	    		aFokusRegalFach.popProdukt();
-	    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Verschrotten", 500),false));
+	    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag(AuftragsArt.verschrotten, 500),false));
 	    		dieGui.aktualisiereRegal(dasRegal);
 	    		dieGui.aktualisiereBilanz(dieBilanz);
 	    		dieGui.setBtnNeuerAuftragEnabled(true);
@@ -137,7 +133,7 @@ public class Steuerung {
 	    			aFokusRegalFach.getProdukt().pruefeObEinlagerbar(ziel.getPosX(), ziel.getPosY(), ziel.getTiefe());
 		    		ziel.pushProdukt(aFokusRegalFach.getProdukt());
 		    		aFokusRegalFach.popProdukt();
-		    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Umlagern", 100), false));
+		    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag(AuftragsArt.umlagern, 100), false));
 		    		dieGui.aktualisiereRegal(dasRegal);
 		    		dieGui.aktualisiereBilanz(dieBilanz);
 		    		modus = mode.leerlauf;
@@ -164,9 +160,9 @@ public class Steuerung {
     }
     public void fokusiereAuftrag(int pIndex) {
 		aFokusAuftrag = dieAuftragsListe.getAuftrag(pIndex);
-		if(aFokusAuftrag.getAuftragsArt().equals("Einlagerung"))
+		if(aFokusAuftrag.getAuftragsArt() == AuftragsArt.einlagern)
 			modus = mode.einlagern;
-		else if(aFokusAuftrag.getAuftragsArt().equals("Auslagerung"))
+		else if(aFokusAuftrag.getAuftragsArt() == AuftragsArt.auslagern)
 			modus = mode.auslagern;
 		dieGui.setBtnNeuerAuftragEnabled(false);
 		dieGui.setBtnSchrottEnabled(false);

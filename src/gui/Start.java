@@ -33,6 +33,9 @@ import javax.swing.plaf.ColorUIResource;
 
 import auftraege.*;
 import bilanz.*;
+import enums.AuftragsArt;
+import enums.Ursache;
+import exceptions.AuftragsException;
 import regal.Regalfach;
 
 import javax.swing.border.EmptyBorder;
@@ -93,7 +96,9 @@ public class Start {
 				temp[i] = art + "   " + name + "  " + sign+belohnung + " €";
 			}
 			else{
-				String  name = a.getAuftragsArt(),
+				String  name = a.getAuftragsArt() == AuftragsArt.umlagern ? "Umlagern" :
+							   a.getAuftragsArt() == AuftragsArt.verschrotten ? "Verschrotten" :
+							   a.getAuftragsArt() == AuftragsArt.abbruch ? "Strafe" : "",
 						belohnung = Integer.toString(a.getBelohnung()),
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
 				temp[i] = name + "  " + sign+belohnung + " €";
@@ -104,7 +109,7 @@ public class Start {
 		listBilanz.setListData(temp);
 		
 	}
-	public void aktualisiereAuftragsListe(Auftragsliste pListe) {
+	public void aktualisiereAuftragsListe(Auftragsliste pListe) throws AuftragsException{
 		Auftrag[] auftraege = new Auftrag[3];
 		for(int i = 0; i< 3; i++){
 			
@@ -115,13 +120,12 @@ public class Start {
 				lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
 				lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
 				lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
-				if(auftraege[i].getAuftragsArt().equals("Einlagerung"))
+				if(auftraege[i].getAuftragsArt() == AuftragsArt.einlagern)
 					lblAuftragsArt[i].setText("  /\\");
-				else if(auftraege[i].getAuftragsArt().equals("Auslagerung"))
+				else if(auftraege[i].getAuftragsArt() == AuftragsArt.auslagern)
 					lblAuftragsArt[i].setText("  \\/");
-				else {
-					System.out.println("Fehler bei AuftragsArt! => " + auftraege[i].getAuftragsArt());
-				}
+				else 
+					throw new AuftragsException(Ursache.auftragsArt);
 				pnlAuftrag[i].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				setBackground(lblProduktAttr1[i], pnlAuftrag[i]);
 				pnlAuftrag[i].setVisible(true);
@@ -337,9 +341,12 @@ public class Start {
 			public void actionPerformed(ActionEvent e) {
 				dieSteuerung.resetFokusAuftrag();
 				dieSteuerung.resetFokusRegalFach();
-				System.out.println("Klick neuer Auftrag");
-				Auftragsliste liste = dieSteuerung.neuerAuftrag();
-				aktualisiereAuftragsListe(liste);
+				try {
+					Auftragsliste liste = dieSteuerung.neuerAuftrag();
+					aktualisiereAuftragsListe(liste);
+				} catch (AuftragsException f) {
+					System.out.println(f.getMessage());
+				}
 			}
 		});
 		pnlButtons.add(btnNeuerAuftrag);

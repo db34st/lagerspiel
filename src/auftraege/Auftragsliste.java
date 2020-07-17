@@ -24,7 +24,7 @@ public class Auftragsliste {
     	return anzahl;
     }
     public void neuerAuftrag(Auftrag pAuftrag) throws AuftragsException {
-    	if(anzahl > 3) 
+    	if(anzahl >= 3) 
     		throw new AuftragsException(Ursache.maxDreiAuftraege);
     	for(int i = 0; i<3;i++) {
     		if(auftrag[i] == null) {

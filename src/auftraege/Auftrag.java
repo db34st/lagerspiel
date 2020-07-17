@@ -1,36 +1,86 @@
 package auftraege;
 import produkte.*;
+import enums.AuftragsArt;
+import enums.Ursache;
+import exceptions.AuftragsException;
 public class Auftrag {
 	static int idCounter;
     private int aId, aBelohnung;
-    private String aAuftragsArt;
+    private AuftragsArt aArt;
     private Produkt aProdukt;
     
     public Auftrag(String[] temp) {
     	try {
 			aId = idCounter++;
-			aAuftragsArt = temp[1];
+			
+			aArt = temp[1].equals("Einlagerung") ? AuftragsArt.einlagern : AuftragsArt.auslagern;
 			aBelohnung = Integer.parseInt(temp[5]);
 	    	switch(temp[2]) {
 	    	case "Papier": 
-	    		aProdukt = new Papier(temp[3], temp[4]);
+	    		switch(temp[3]) {
+	    		case "Weiß":
+	    		case "Blau":
+	    		case "Grün":
+	    			switch (temp[4]) {
+	    			case "A3":
+	    			case "A4":
+	    			case "A5":
+	    				aProdukt = new Papier(temp[3], temp[4]);
+	    	    		break;
+	    	    		default:
+	    	    			throw new AuftragsException(Ursache.produktAttr2);
+	    			}
+	    			break;
+	    		default:
+	    			throw new AuftragsException(Ursache.produktAttr1);
+	    		}
 	    		break;
 	    	case "Holz": 
-	    		aProdukt = new Holz(temp[3], temp[4]);
+	    		switch(temp[3]) {
+	    		case "Kiefer":
+	    		case "Buche":
+	    		case "Eiche":
+	    			switch (temp[4]) {
+	    			case "Bretter":
+	    			case "Balken":
+	    			case "Scheit":
+	    				aProdukt = new Holz(temp[3], temp[4]);
+	    	    		break;
+	    	    		default:
+	    	    			throw new AuftragsException(Ursache.produktAttr2);
+	    			}
+	    			break;
+	    		default:
+	    			throw new AuftragsException(Ursache.produktAttr1);
+	    		}
 	    		break;
 	    	case "Stein": 
-	    		aProdukt = new Stein(temp[3], temp[4]);
-	    		break;
+	    		switch(temp[3]) {
+	    		case "Marmor":
+	    		case "Granit":
+	    		case "Sandstein":
+	    			switch (temp[4]) {
+	    			case "Leicht":
+	    			case "Mittel":
+	    			case "Schwer":
+	    				aProdukt = new Stein(temp[3], temp[4]);
+	    	    		break;
+	    	    		default:
+	    	    			throw new AuftragsException(Ursache.produktAttr2);
+	    			}
+	    			break;
 	    		default:
-	    			throw new Exception("Fehler in der .csv-Datei: Produktname");
+	    			throw new AuftragsException(Ursache.produktAttr1);
+	    		}
+	    		break;
 	    	}    	
     	}
 		catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
     }
-    public Auftrag(String aAuftragsArt, int aBelohnung) {
-    	this.aAuftragsArt = aAuftragsArt;
+    public Auftrag(AuftragsArt aArt, int aBelohnung) {
+    	this.aArt = aArt;
     	this.aBelohnung = aBelohnung;
     }
 	public int getId() {
@@ -39,8 +89,8 @@ public class Auftrag {
 	public int getBelohnung() {
 		return aBelohnung;
 	}
-	public String getAuftragsArt() {
-		return aAuftragsArt;
+	public AuftragsArt getAuftragsArt() {
+		return aArt;
 	}
 	public Produkt getProdukt() {
 		return aProdukt;

@@ -8,5 +8,9 @@ public enum Ursache {
 	
 	idNichtGefunden,
 	maxDreiAuftraege,
-	nichtPassenderAuftrag
+	nichtPassenderAuftrag,
+	produktName,
+	produktAttr1,
+	produktAttr2,
+	auftragsArt
 }
