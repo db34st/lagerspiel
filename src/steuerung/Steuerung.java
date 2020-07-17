@@ -212,12 +212,21 @@ public class Steuerung {
     		dieGui.setBtnRegalFachEnabled(false);
     		break;
     	case leerlauf:
-    		aFokusRegalFach = dasRegal[pRegalFach];
-    		dieGui.setBtnNeuerAuftragEnabled(false);
-    		dieGui.setBtnAbbruchAuftragEnabled(false);
-    		dieGui.setBtnSchrottEnabled(true);
-			dieGui.setBtnUmlagernEnabled(true);
-    		System.out.println("leerlauf");
+    		if(aFokusRegalFach == null) {
+	    		aFokusRegalFach = dasRegal[pRegalFach];
+	    		dieGui.setBtnNeuerAuftragEnabled(false);
+	    		dieGui.setBtnAbbruchAuftragEnabled(false);
+	    		dieGui.setBtnSchrottEnabled(true);
+				dieGui.setBtnUmlagernEnabled(true);
+	    		System.out.println("leerlauf");
+    		}
+    		else {
+    			resetFokusRegalFach();
+    			dieGui.setBtnNeuerAuftragEnabled(true);
+	    		dieGui.setBtnAbbruchAuftragEnabled(false);
+	    		dieGui.setBtnSchrottEnabled(false);
+				dieGui.setBtnUmlagernEnabled(false);
+    		}
     		break;
     	case umlagern:
     		try {
