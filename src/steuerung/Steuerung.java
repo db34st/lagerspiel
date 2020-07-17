@@ -122,19 +122,41 @@ public class Steuerung {
     	if(modus == mode.leerlauf && aFokusRegalFach != null) {
     		modus = mode.umlagern;
     		dieGui.setBtnSchrottEnabled(false);
+    		for(int i = 0; i < 9; i++) {
+				try {
+					//probiert alle Regale durch, nur die, die möglich sind, werden auf eneabled geschaltet
+					aFokusRegalFach.getProdukt().pruefeObEinlagerbar(dasRegal[i].getPosX(), dasRegal[i].getPosY(), dasRegal[i].getTiefe());
+					dieGui.setBtnRegalFachEnabled(true, i);
+				} catch(Exception e) {}
+			}
     	}
-    	else if(modus == mode.umlagern && ziel != null) {
-    		try {
-    			aFokusRegalFach.getProdukt().pruefeObEinlagerbar(ziel.getPosX(), ziel.getPosY(), ziel.getTiefe());
-	    		ziel.pushProdukt(aFokusRegalFach.getProdukt());
-	    		aFokusRegalFach.popProdukt();
-	    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Umlagern", 100), false));
-	    		dieGui.aktualisiereRegal(dasRegal);
-	    		dieGui.aktualisiereBilanz(dieBilanz);
-	    		modus = mode.leerlauf;
+    	else if(modus == mode.umlagern) {
+    		if(ziel != null) {
+	    		try {
+	    			aFokusRegalFach.getProdukt().pruefeObEinlagerbar(ziel.getPosX(), ziel.getPosY(), ziel.getTiefe());
+		    		ziel.pushProdukt(aFokusRegalFach.getProdukt());
+		    		aFokusRegalFach.popProdukt();
+		    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag("Umlagern", 100), false));
+		    		dieGui.aktualisiereRegal(dasRegal);
+		    		dieGui.aktualisiereBilanz(dieBilanz);
+		    		modus = mode.leerlauf;
+	    		}
+	    		catch (Exception e) {
+	    			System.out.println(e.getMessage());
+	    		}
     		}
-    		catch (Exception e) {
-    			System.out.println(e.getMessage());
+    		else {
+    			dieGui.setBtnNeuerAuftragEnabled(true);
+    			dieGui.setBtnAbbruchAuftragEnabled(false);
+    			dieGui.setBtnSchrottEnabled(false);
+    			dieGui.setBtnUmlagernEnabled(false);
+    			for(int i = 0; i < 9; i++)
+            		if(dasRegal[i].getProdukt() == null)
+            			dieGui.setBtnRegalFachEnabled(false, i);
+            		else
+            			dieGui.setBtnRegalFachEnabled(true, i);
+    			resetFokusRegalFach();
+    			modus = mode.leerlauf;
     		}
     	}
     	else throw new Exception("Fehler beim umlagern in Steuerung!");	
@@ -178,7 +200,11 @@ public class Steuerung {
     		einlagern(aFokusAuftrag, dasRegal[pRegalFach]);
     		dieGui.setBtnNeuerAuftragEnabled(true);
     		dieGui.setBtnAbbruchAuftragEnabled(false);
-    		dieGui.setBtnRegalFachEnabled(false);
+    		for(int i = 0; i < 9; i++)
+        		if(dasRegal[i].getProdukt() == null)
+        			dieGui.setBtnRegalFachEnabled(false, i);
+        		else
+        			dieGui.setBtnRegalFachEnabled(true, i);
     		break;
     	case auslagern:
     		auslagern(aFokusAuftrag, dasRegal[pRegalFach]);
@@ -208,6 +234,13 @@ public class Steuerung {
     }
     public void resetFokusAuftrag() {
     	aFokusAuftrag = null;
+    	for(int i = 0; i < 9; i++)
+    		if(dasRegal[i].getProdukt() == null)
+    			dieGui.setBtnRegalFachEnabled(false, i);
+    		else
+    			dieGui.setBtnRegalFachEnabled(true, i);
+    	dieGui.setBtnAbbruchAuftragEnabled(false);
+    	dieGui.setBtnNeuerAuftragEnabled(true);
     }
     public void resetFokusRegalFach() {
     	aFokusRegalFach = null;
