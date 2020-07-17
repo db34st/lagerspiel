@@ -39,8 +39,11 @@ public class Regalfach {
     }
     public void popProdukt() throws Exception {
     	if(top != null) {
+    		if(top.aProdukt.getAttribut2().equals("Balken"))
+    			anzahl = 0;
+    		else
+    			anzahl--;
     		top = top.next;
-    		anzahl--;
     	}
     	else throw new Exception("Regalfach leer!");
     }
