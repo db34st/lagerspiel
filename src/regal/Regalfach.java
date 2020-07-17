@@ -1,6 +1,8 @@
 package regal;
 import auftraege.Auftrag;
 import produkte.*;
+import exceptions.*;
+import enums.*;
 public class Regalfach {
     int aPosX, aPosY;
     private Inhalt top;
@@ -30,7 +32,8 @@ public class Regalfach {
 	        else
 	        	anzahl++;
         }
-        else throw new Exception("Regalfach ist schon voll!");
+        else
+        	throw new EinlagerException(ursache.holzBalkenBrauchtDrei);
     }
     public Produkt getProdukt() {
     	if(top != null)
@@ -45,7 +48,8 @@ public class Regalfach {
     			anzahl--;
     		top = top.next;
     	}
-    	else throw new Exception("Regalfach leer!");
+    	else
+    		throw new EinlagerException(ursache.schonVoll);
     }
     public void pruefeObPassenderAuftrag(Auftrag pAuftrag) throws Exception{
     	String tName = top.aProdukt.getProduktName(),
@@ -55,6 +59,6 @@ public class Regalfach {
     		   tAttr2 = top.aProdukt.getAttribut2(),
     		   pAttr2 = pAuftrag.getProdukt().getAttribut2();
     	if(!tName.equals(pName) || !tAttr1.equals(pAttr1) || !tAttr2.equals(pAttr2))
-    		throw new Exception();    	
+    		throw new Exception();
     }
 }

@@ -2,6 +2,7 @@ package steuerung;
 import regal.*;
 import auftraege.*;
 import bilanz.*;
+import exceptions.*;
 import gui.*;
 import produkte.*;
 public class Steuerung {
@@ -71,7 +72,7 @@ public class Steuerung {
 			dieGui.aktualisiereBilanz(dieBilanz);
 		}
 		catch (Exception e) {
-			System.out.println("Fehler beim einlagern: "+e.getMessage());
+			System.out.println(e.getMessage());
 		}    		
     	
     	modus = mode.leerlauf;

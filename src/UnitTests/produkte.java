@@ -25,7 +25,7 @@ class produkte {
 			for(int m = 0; m<3; m++) 
 				stein[n][m] = new Stein(attrStein[m][0], attrStein[n][1]);
 	}
-	@Test
+	/*@Test
 	void papierEinlagerbar() {
 		assertEquals(papier[0][0].pruefeObEinlagerbar(0, 0, 0), false);
 		assertEquals(papier[0][0].pruefeObEinlagerbar(0, 0, 2), true);
@@ -57,5 +57,5 @@ class produkte {
 		assertEquals(stein[0][0].pruefeObEinlagerbar(0, 0, 2), true);
 		assertEquals(stein[0][0].pruefeObEinlagerbar(1, 1, 3), true);
 		assertEquals(stein[0][0].pruefeObEinlagerbar(2, 1, 1), true);
-	}
+	}*/
 }
