@@ -82,7 +82,12 @@ public class Start {
 		initialize();
 		dieSteuerung = new Steuerung(this);
 	}
-	public void aktualisiereBilanz(Bilanz pBilanz) {
+	public void aktualisiereGui() {
+		aktualisiereBilanz(dieSteuerung.getBilanz());
+		aktualisiereAuftragsListe(dieSteuerung.getAuftragsListe());
+		aktualisiereRegal(dieSteuerung.getRegal());
+	}	
+	private void aktualisiereBilanz(Bilanz pBilanz) {
 		String[] temp = new String[pBilanz.getAnzahl() + 1];
 		temp[0] = "Bilanz: " + pBilanz.getKontoStand() + " €";
 		pBilanz.reset();
@@ -96,9 +101,10 @@ public class Start {
 				temp[i] = art + "   " + name + "  " + sign+belohnung + " €";
 			}
 			else{
-				String  name = a.getAuftragsArt() == AuftragsArt.umlagern ? "Umlagern" :
-							   a.getAuftragsArt() == AuftragsArt.verschrotten ? "Verschrotten" :
-							   a.getAuftragsArt() == AuftragsArt.abbruch ? "Strafe" : "",
+				AuftragsArt art = a.getAuftragsArt();
+				String  name = art == AuftragsArt.umlagern ? "Umlagern" :
+							   art == AuftragsArt.verschrotten ? "Verschrotten" :
+							   art == AuftragsArt.abbruch ? "Strafe" : "",
 						belohnung = Integer.toString(a.getBelohnung()),
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
 				temp[i] = name + "  " + sign+belohnung + " €";
@@ -109,7 +115,7 @@ public class Start {
 		listBilanz.setListData(temp);
 		
 	}
-	public void aktualisiereAuftragsListe(Auftragsliste pListe) throws AuftragsException{
+	private void aktualisiereAuftragsListe(Auftragsliste pListe){
 		Auftrag[] auftraege = new Auftrag[3];
 		for(int i = 0; i< 3; i++){
 			
@@ -124,8 +130,6 @@ public class Start {
 					lblAuftragsArt[i].setText("  /\\");
 				else if(auftraege[i].getAuftragsArt() == AuftragsArt.auslagern)
 					lblAuftragsArt[i].setText("  \\/");
-				else 
-					throw new AuftragsException(Ursache.auftragsArt);
 				pnlAuftrag[i].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				setBackground(lblProduktAttr1[i], pnlAuftrag[i]);
 				pnlAuftrag[i].setVisible(true);
@@ -134,7 +138,7 @@ public class Start {
 			else btnNeuerAuftrag.setEnabled(true);
 		}
 	}
-	public void aktualisiereRegal(Regalfach pRegal[]) {
+	private void aktualisiereRegal(Regalfach pRegal[]) {
 		for(int i = 0; i < 9; i++) {
 			if(pRegal[i].getProdukt() != null) {
 				btnRegalFach[i].setText(pRegal[i].getProdukt().getProduktName()+" - "+pRegal[i].getProdukt().getAttribut2()+" [" + (3-pRegal[i].getTiefe()) +"/3]");

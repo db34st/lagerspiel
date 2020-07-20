@@ -40,8 +40,7 @@ public class Steuerung {
     				dieBilanz = new Bilanz(tempBilanzEintrag);
     			else 
     				dieBilanz.neuerEintrag(tempBilanzEintrag);
-    			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
-    			dieGui.aktualisiereBilanz(dieBilanz);
+    			dieGui.aktualisiereGui();
     		}
     		catch (AuftragsException e) {
     			System.out.println(e.getMessage());
@@ -63,9 +62,7 @@ public class Steuerung {
 			resetFokusAuftrag();
 			resetFokusRegalFach();
 			
-			dieGui.aktualisiereRegal(dasRegal);
-			dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
-			dieGui.aktualisiereBilanz(dieBilanz);
+			dieGui.aktualisiereGui();
 		}
 		catch (AuftragsException | RegalException e) {
 			System.out.println(e.getMessage());
@@ -88,9 +85,7 @@ public class Steuerung {
 	    		aFokusAuftrag = null;
 				aFokusRegalFach = null;
 	    		
-				dieGui.aktualisiereRegal(dasRegal);
-				dieGui.aktualisiereAuftragsListe(dieAuftragsListe);
-				dieGui.aktualisiereBilanz(dieBilanz);
+				dieGui.aktualisiereGui();
     		}
     		catch (AuftragsException | RegalException e) {
     			System.out.println(e.getMessage());
@@ -103,8 +98,7 @@ public class Steuerung {
 	    	if(aFokusRegalFach != null) {
 	    		aFokusRegalFach.popProdukt();
 	    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag(AuftragsArt.verschrotten, 500),false));
-	    		dieGui.aktualisiereRegal(dasRegal);
-	    		dieGui.aktualisiereBilanz(dieBilanz);
+	    		dieGui.aktualisiereGui();	    		
 	    		dieGui.setBtnNeuerAuftragEnabled(true);
 	    		dieGui.setBtnUmlagernEnabled(false);
 	    		dieGui.setBtnSchrottEnabled(false);
@@ -134,8 +128,7 @@ public class Steuerung {
 		    		ziel.pushProdukt(aFokusRegalFach.getProdukt());
 		    		aFokusRegalFach.popProdukt();
 		    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag(AuftragsArt.umlagern, 100), false));
-		    		dieGui.aktualisiereRegal(dasRegal);
-		    		dieGui.aktualisiereBilanz(dieBilanz);
+		    		dieGui.aktualisiereGui();
 		    		modus = mode.leerlauf;
 	    		}
 	    		catch (RegalException e) {
@@ -246,6 +239,18 @@ public class Steuerung {
     }
     public void resetAuftragsListe() {
     	dieAuftragsListe = null;
+    }
+    public mode getModus() {
+    	return modus;
+    }
+    public Bilanz getBilanz() {
+    	return dieBilanz;
+    }
+    public Auftragsliste getAuftragsListe() {
+    	return dieAuftragsListe;
+    }
+    public Regalfach[] getRegal(){
+    	return dasRegal;
     }
 }
 enum mode{
