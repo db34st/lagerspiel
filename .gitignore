@@ -1,4 +1,3 @@
 /bin/
 /.metadata/
-/Leistungsnachweis.csv
-/test.csv
+*.csv
