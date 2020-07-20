@@ -188,7 +188,7 @@ public class Start {
 	}
 	public void setBtnRegalFachEnabled(boolean b, int i) {
 		btnRegalFach[i].setEnabled(b);
-		btnRegalFach[i].setBorder(new LineBorder(b ? Color.BLACK : Color.GRAY, b ? 2 : 1));
+		btnRegalFach[i].setBorder(new LineBorder(b ? Color.BLACK : Color.GRAY, b ? 5 : 1));
 	}
 	public void setBtnRegalFachEnabled(boolean b) {
 		for(int i = 0; i < 9; i++)

@@ -121,12 +121,15 @@ public class Steuerung {
     	if(modus == mode.leerlauf && aFokusRegalFach != null) {
     		modus = mode.umlagern;
     		dieGui.setBtnSchrottEnabled(false);
+    		dieGui.setBtnRegalFachEnabled(false);
     		for(int i = 0; i < 9; i++) {
-				try {
-					//probiert alle Regale durch, nur die, die möglich sind, werden auf eneabled geschaltet
-					aFokusRegalFach.getProdukt().pruefeObEinlagerbar(dasRegal[i].getPosX(), dasRegal[i].getPosY(), dasRegal[i].getTiefe());
-					dieGui.setBtnRegalFachEnabled(true, i);
-				} catch(Exception e) {}
+    			if(aFokusRegalFach != dasRegal[i]) {	// damit man ein produkt nicht in das gleiche RegalFach zurück lagern kann
+					try {
+						//probiert alle Regale durch, nur die, die möglich sind, werden auf eneabled geschaltet
+						aFokusRegalFach.getProdukt().pruefeObEinlagerbar(dasRegal[i].getPosX(), dasRegal[i].getPosY(), dasRegal[i].getTiefe());
+						dieGui.setBtnRegalFachEnabled(true, i);
+					} catch(Exception e) {}
+    			}
 			}
     	}
     	else if(modus == mode.umlagern) {
