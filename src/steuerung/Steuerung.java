@@ -1,8 +1,12 @@
 package steuerung;
 import regal.*;
+
+import javax.swing.JOptionPane;
+
 import auftraege.*;
 import bilanz.*;
 import enums.AuftragsArt;
+import enums.Ursache;
 import exceptions.*;
 import gui.*;
 import produkte.*;
@@ -41,10 +45,10 @@ public class Steuerung {
     			else 
     				dieBilanz.neuerEintrag(tempBilanzEintrag);
     			dieGui.aktualisiereGui();
+    		} catch (AuftragsException e) {
+    			JOptionPane.showMessageDialog(null,e.getMessage(),"Auftragsfehler", JOptionPane.ERROR_MESSAGE);
     		}
-    		catch (AuftragsException e) {
-    			System.out.println(e.getMessage());
-    		}
+    		
     	}
     }
     private void einlagern(Auftrag pAuftrag, Regalfach pRegalFach){
@@ -63,9 +67,10 @@ public class Steuerung {
 			resetFokusRegalFach();
 			
 			dieGui.aktualisiereGui();
-		}
-		catch (AuftragsException | RegalException e) {
-			System.out.println(e.getMessage());
+		} catch (AuftragsException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Auftragsfehler", JOptionPane.ERROR_MESSAGE);
+		} catch (RegalException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
 		}
     	
     	modus = mode.leerlauf;
@@ -86,9 +91,10 @@ public class Steuerung {
 				aFokusRegalFach = null;
 	    		
 				dieGui.aktualisiereGui();
-    		}
-    		catch (AuftragsException | RegalException e) {
-    			System.out.println(e.getMessage());
+    		} catch (AuftragsException e) {
+    			JOptionPane.showMessageDialog(null,e.getMessage(),"Auftragsfehler", JOptionPane.ERROR_MESSAGE);
+    		} catch (RegalException e) {
+    			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
     		}
     	}
     	modus = mode.leerlauf;
@@ -103,10 +109,9 @@ public class Steuerung {
 	    		dieGui.setBtnUmlagernEnabled(false);
 	    		dieGui.setBtnSchrottEnabled(false);
 	    	}
-    	}
-    	catch (RegalException e) {
-    		System.out.println(e.getMessage());
-    	}
+		} catch (RegalException e) {
+			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
+		}
     	modus = mode.leerlauf;
     }
     public void umlagern(Regalfach ziel) throws Exception {
@@ -130,9 +135,8 @@ public class Steuerung {
 		    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag(AuftragsArt.umlagern, 100), false));
 		    		dieGui.aktualisiereGui();
 		    		modus = mode.leerlauf;
-	    		}
-	    		catch (RegalException e) {
-	    			System.out.println(e.getMessage());
+	    		} catch (RegalException e) {
+	    			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
 	    		}
     		}
     		else {
@@ -201,7 +205,6 @@ public class Steuerung {
 	    		dieGui.setBtnAbbruchAuftragEnabled(false);
 	    		dieGui.setBtnSchrottEnabled(true);
 				dieGui.setBtnUmlagernEnabled(true);
-	    		System.out.println("leerlauf");
     		}
     		else {
     			resetFokusRegalFach();

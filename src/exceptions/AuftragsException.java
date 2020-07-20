@@ -28,6 +28,8 @@ public class AuftragsException extends Exception{
 		case auftragsArt:
 			errMessage += "Fehler beim Parsen der Auftragsart!";
 			break;
+		default:
+			break;
 		}
 	}
 	public String getMessage() {

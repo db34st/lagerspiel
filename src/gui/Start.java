@@ -118,7 +118,6 @@ public class Start {
 	private void aktualisiereAuftragsListe(Auftragsliste pListe){
 		Auftrag[] auftraege = new Auftrag[3];
 		for(int i = 0; i< 3; i++){
-			
 			pnlAuftrag[i].setVisible(false);
 			auftraege[i] = pListe.getAuftrag(i);
 			if(auftraege[i] != null) {
@@ -421,13 +420,11 @@ public class Start {
 					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 					fokusAuftrag = auftrag.a0;
 					dieSteuerung.fokusiereAuftrag(0);
-					System.out.println("Fokus Auftrag0");
 				}
 				else {
 					dieSteuerung.resetFokusAuftrag();
 					fokusAuftrag = null;
 					pnlAuftrag[0].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-					System.out.println("Kein Fokus Auftrag0");
 				}
 			}
 		});
@@ -440,13 +437,11 @@ public class Start {
 					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 					fokusAuftrag = auftrag.a1;
 					dieSteuerung.fokusiereAuftrag(1);
-					System.out.println("Fokus Auftrag1");
 				}
 				else {
 					dieSteuerung.resetFokusAuftrag();
 					fokusAuftrag = null;
 					pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-					System.out.println("Kein Fokus Auftrag1");
 				}
 				
 			}
@@ -460,13 +455,11 @@ public class Start {
 					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 4));
 					fokusAuftrag = auftrag.a2;
 					dieSteuerung.fokusiereAuftrag(2);
-					System.out.println("Fokus Auftrag2");
 				}
 				else {
 					dieSteuerung.resetFokusAuftrag();
 					fokusAuftrag = null;
 					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
-					System.out.println("Kein Fokus Auftrag2");
 				}
 				
 			}
@@ -513,4 +506,3 @@ enum regal{
 	r7,
 	r8
 }
-
