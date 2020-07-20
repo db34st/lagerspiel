@@ -54,13 +54,15 @@ public class Regalfach {
     		throw new RegalException(Ursache.schonVoll);
     }
     public void pruefeObPassenderAuftrag(Auftrag pAuftrag) throws AuftragsException{
-    	String tName = top.aProdukt.getProduktName(),
-    		   pName = pAuftrag.getProdukt().getProduktName(),
-    		   tAttr1 = top.aProdukt.getAttribut1(),
-    		   pAttr1 = pAuftrag.getProdukt().getAttribut1(),
-    		   tAttr2 = top.aProdukt.getAttribut2(),
-    		   pAttr2 = pAuftrag.getProdukt().getAttribut2();
-    	if(!tName.equals(pName) || !tAttr1.equals(pAttr1) || !tAttr2.equals(pAttr2))
-    		throw new AuftragsException(Ursache.nichtPassenderAuftrag);
+    	if(top != null) {
+	    	String tName = top.aProdukt.getProduktName(),
+	    		   pName = pAuftrag.getProdukt().getProduktName(),
+	    		   tAttr1 = top.aProdukt.getAttribut1(),
+	    		   pAttr1 = pAuftrag.getProdukt().getAttribut1(),
+	    		   tAttr2 = top.aProdukt.getAttribut2(),
+	    		   pAttr2 = pAuftrag.getProdukt().getAttribut2();
+	    	if(!tName.equals(pName) || !tAttr1.equals(pAttr1) || !tAttr2.equals(pAttr2))
+	    		throw new AuftragsException(Ursache.nichtPassenderAuftrag);
+    	}
     }
 }

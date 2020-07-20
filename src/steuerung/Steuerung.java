@@ -69,7 +69,7 @@ public class Steuerung {
 		}
 		catch (AuftragsException | RegalException e) {
 			System.out.println(e.getMessage());
-		}    		
+		}
     	
     	modus = mode.leerlauf;
     }
