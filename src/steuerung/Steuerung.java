@@ -111,6 +111,7 @@ public class Steuerung {
 	    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag(AuftragsArt.verschrotten, 500),false));
 	    		dieGui.aktualisiereGui();	    		
 	    		dieGui.aktualisiereButtons(btnMode.leerlauf);
+	    		resetFokusRegalFach();
 	    		modus = mode.leerlauf;
 	    	}
 		} catch (RegalException e) {
@@ -209,6 +210,7 @@ public class Steuerung {
     	case umlagern:
     		try {
     			umlagern(dasRegal[pRegalFach]);
+    			resetFokusRegalFach();
     			dieGui.aktualisiereGui();
     			dieGui.aktualisiereButtons(btnMode.leerlauf);
     		}
