@@ -54,7 +54,7 @@ public class Start {
 	private JPanel pnlLeft, pnlCenter, pnlButtons, pnlAuftraege;
 	private auftrag fokusAuftrag = null;
 	private regal fokusRegalFach = null;
-	
+	private btnMode modus = btnMode.leerlauf;
 	
 	int maxAnzahlAuftraege = 3;
 	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
@@ -86,6 +86,7 @@ public class Start {
 		aktualisiereBilanz(dieSteuerung.getBilanz());
 		aktualisiereAuftragsListe(dieSteuerung.getAuftragsListe());
 		aktualisiereRegal(dieSteuerung.getRegal());
+		aktualisiereButtons();
 	}	
 	private void aktualisiereBilanz(Bilanz pBilanz) {
 		String[] temp = new String[pBilanz.getAnzahl() + 1];
@@ -150,6 +151,40 @@ public class Start {
 				btnRegalFach[i].setBackground(null);
 			}
 		}
+	}
+	public void aktualisiereButtons() {
+		switch(modus) {
+		case fokusAuftrag:
+			btnNeuerAuftrag.setEnabled(false);
+			btnAbbruchAuftrag.setEnabled(true);
+			btnSchrott.setEnabled(false);
+			btnUmlagern.setEnabled(false);
+			break;
+		case fokusRegal:
+			btnNeuerAuftrag.setEnabled(false);
+			btnAbbruchAuftrag.setEnabled(false);
+			btnSchrott.setEnabled(true);
+			btnUmlagern.setEnabled(true);
+			break;
+		case umlagern:
+			btnNeuerAuftrag.setEnabled(false);
+			btnAbbruchAuftrag.setEnabled(false);
+			btnSchrott.setEnabled(false);
+			btnUmlagern.setEnabled(true);
+			break;
+		case leerlauf:
+			btnNeuerAuftrag.setEnabled(true);
+			btnAbbruchAuftrag.setEnabled(false);
+			btnSchrott.setEnabled(false);
+			btnUmlagern.setEnabled(false);
+    		break;
+		default:
+			break;
+		}
+	}
+	public void aktualisiereButtons(btnMode modus) {
+		this.modus = modus;
+		aktualisiereButtons();
 	}
 	public void setBtnRegalFachEnabled(boolean b, int i) {
 		btnRegalFach[i].setEnabled(b);
@@ -489,20 +524,26 @@ public class Start {
 			pnlAuftrag[n].add(lblAuftragsArt[n]);
 		}
 	}
-}
-enum auftrag{
-	a0,
-	a1,
-	a2
-}
-enum regal{
-	r0,
-	r1,
-	r2,
-	r3,
-	r4,
-	r5,
-	r6,
-	r7,
-	r8
+	public enum btnMode{
+		fokusAuftrag,
+		fokusRegal,
+		umlagern,
+		leerlauf
+	}
+	private enum auftrag{
+		a0,
+		a1,
+		a2
+	}
+	private enum regal{
+		r0,
+		r1,
+		r2,
+		r3,
+		r4,
+		r5,
+		r6,
+		r7,
+		r8
+	}
 }

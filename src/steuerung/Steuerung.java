@@ -9,6 +9,7 @@ import enums.AuftragsArt;
 import enums.Ursache;
 import exceptions.*;
 import gui.*;
+import gui.Start.btnMode;
 import produkte.*;
 public class Steuerung {
     Regalfach dasRegal[] = new Regalfach[9];
@@ -45,6 +46,7 @@ public class Steuerung {
     			else 
     				dieBilanz.neuerEintrag(tempBilanzEintrag);
     			dieGui.aktualisiereGui();
+    			dieGui.aktualisiereButtons(btnMode.leerlauf);
     		} catch (AuftragsException e) {
     			JOptionPane.showMessageDialog(null,e.getMessage(),"Auftragsfehler", JOptionPane.ERROR_MESSAGE);
     		}
@@ -65,15 +67,16 @@ public class Steuerung {
 			
 			resetFokusAuftrag();
 			resetFokusRegalFach();
-			
+			modus = mode.leerlauf;
 			dieGui.aktualisiereGui();
+			dieGui.aktualisiereButtons(btnMode.leerlauf);
 		} catch (AuftragsException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Auftragsfehler", JOptionPane.ERROR_MESSAGE);
 		} catch (RegalException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
 		}
     	
-    	modus = mode.leerlauf;
+    	
     }
     private void auslagern(Auftrag pAuftrag, Regalfach pRegalFach) {
     	Produkt ap = pAuftrag.getProdukt(),		//ap = AuftragsProdukt
@@ -91,13 +94,15 @@ public class Steuerung {
 				aFokusRegalFach = null;
 	    		
 				dieGui.aktualisiereGui();
+				dieGui.aktualisiereButtons(btnMode.leerlauf);
+				modus = mode.leerlauf;
     		} catch (AuftragsException e) {
     			JOptionPane.showMessageDialog(null,e.getMessage(),"Auftragsfehler", JOptionPane.ERROR_MESSAGE);
     		} catch (RegalException e) {
     			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
     		}
     	}
-    	modus = mode.leerlauf;
+    	
     }
     public void verschrotten() {
     	try {
@@ -105,14 +110,13 @@ public class Steuerung {
 	    		aFokusRegalFach.popProdukt();
 	    		dieBilanz.neuerEintrag(new Bilanzeintrag(new Auftrag(AuftragsArt.verschrotten, 500),false));
 	    		dieGui.aktualisiereGui();	    		
-	    		dieGui.setBtnNeuerAuftragEnabled(true);
-	    		dieGui.setBtnUmlagernEnabled(false);
-	    		dieGui.setBtnSchrottEnabled(false);
+	    		dieGui.aktualisiereButtons(btnMode.leerlauf);
+	    		modus = mode.leerlauf;
 	    	}
 		} catch (RegalException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
 		}
-    	modus = mode.leerlauf;
+    	
     }
     public void umlagern(Regalfach ziel) throws Exception {
     	if(modus == mode.leerlauf && aFokusRegalFach != null) {
@@ -140,10 +144,7 @@ public class Steuerung {
 	    		}
     		}
     		else {
-    			dieGui.setBtnNeuerAuftragEnabled(true);
-    			dieGui.setBtnAbbruchAuftragEnabled(false);
-    			dieGui.setBtnSchrottEnabled(false);
-    			dieGui.setBtnUmlagernEnabled(false);
+    			dieGui.aktualisiereButtons();
     			for(int i = 0; i < 9; i++)
             		if(dasRegal[i].getProdukt() == null)
             			dieGui.setBtnRegalFachEnabled(false, i);
@@ -161,10 +162,7 @@ public class Steuerung {
 			modus = mode.einlagern;
 		else if(aFokusAuftrag.getAuftragsArt() == AuftragsArt.auslagern)
 			modus = mode.auslagern;
-		dieGui.setBtnNeuerAuftragEnabled(false);
-		dieGui.setBtnSchrottEnabled(false);
-		dieGui.setBtnUmlagernEnabled(false);
-		dieGui.setBtnAbbruchAuftragEnabled(true);
+		dieGui.aktualisiereButtons(btnMode.fokusAuftrag);
 		for(int i = 0; i < 9; i++) {
 			if(modus == mode.einlagern) {
 				try {
@@ -185,8 +183,7 @@ public class Steuerung {
     	switch (modus) {
     	case einlagern:
     		einlagern(aFokusAuftrag, dasRegal[pRegalFach]);
-    		dieGui.setBtnNeuerAuftragEnabled(true);
-    		dieGui.setBtnAbbruchAuftragEnabled(false);
+    		dieGui.aktualisiereButtons(btnMode.leerlauf);
     		for(int i = 0; i < 9; i++)
         		if(dasRegal[i].getProdukt() == null)
         			dieGui.setBtnRegalFachEnabled(false, i);
@@ -195,31 +192,22 @@ public class Steuerung {
     		break;
     	case auslagern:
     		auslagern(aFokusAuftrag, dasRegal[pRegalFach]);
-    		dieGui.setBtnNeuerAuftragEnabled(true);
-    		dieGui.setBtnRegalFachEnabled(false);
+    		dieGui.aktualisiereButtons(btnMode.leerlauf);
     		break;
     	case leerlauf:
     		if(aFokusRegalFach == null) {
 	    		aFokusRegalFach = dasRegal[pRegalFach];
-	    		dieGui.setBtnNeuerAuftragEnabled(false);
-	    		dieGui.setBtnAbbruchAuftragEnabled(false);
-	    		dieGui.setBtnSchrottEnabled(true);
-				dieGui.setBtnUmlagernEnabled(true);
+	    		dieGui.aktualisiereButtons(btnMode.fokusRegal);
     		}
     		else {
     			resetFokusRegalFach();
-    			dieGui.setBtnNeuerAuftragEnabled(true);
-	    		dieGui.setBtnAbbruchAuftragEnabled(false);
-	    		dieGui.setBtnSchrottEnabled(false);
-				dieGui.setBtnUmlagernEnabled(false);
+    			dieGui.aktualisiereButtons(btnMode.leerlauf);
     		}
     		break;
     	case umlagern:
     		try {
     			umlagern(dasRegal[pRegalFach]);
-    			dieGui.setBtnNeuerAuftragEnabled(true);
-    			dieGui.setBtnSchrottEnabled(false);
-    			dieGui.setBtnUmlagernEnabled(false);
+    			dieGui.aktualisiereButtons(btnMode.leerlauf);
     		}
     		catch (Exception e) {
     			System.out.println("Fehler: " + e.getMessage());
@@ -234,8 +222,7 @@ public class Steuerung {
     			dieGui.setBtnRegalFachEnabled(false, i);
     		else
     			dieGui.setBtnRegalFachEnabled(true, i);
-    	dieGui.setBtnAbbruchAuftragEnabled(false);
-    	dieGui.setBtnNeuerAuftragEnabled(true);
+    	dieGui.aktualisiereButtons(btnMode.leerlauf);
     }
     public void resetFokusRegalFach() {
     	aFokusRegalFach = null;
@@ -255,10 +242,10 @@ public class Steuerung {
     public Regalfach[] getRegal(){
     	return dasRegal;
     }
-}
-enum mode{
-	leerlauf,
-	einlagern,
-	auslagern,
-	umlagern
+    public enum mode{
+    	leerlauf,
+    	einlagern,
+    	auslagern,
+    	umlagern
+    }
 }
