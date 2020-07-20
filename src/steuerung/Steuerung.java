@@ -90,8 +90,8 @@ public class Steuerung {
 	    		pRegalFach.popProdukt();
 	    		dieBilanz.neuerEintrag(new Bilanzeintrag(pAuftrag, true));
 	    		dieAuftragsListe.entferneAuftragById(pAuftrag.getId());
-	    		aFokusAuftrag = null;
-				aFokusRegalFach = null;
+	    		resetFokusRegalFach();
+	    		resetFokusAuftrag();
 	    		
 				dieGui.aktualisiereGui();
 				dieGui.aktualisiereButtons(btnMode.leerlauf);

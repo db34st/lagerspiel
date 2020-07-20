@@ -173,7 +173,9 @@ public class Start {
 			btnUmlagern.setEnabled(true);
 			break;
 		case leerlauf:
-			btnNeuerAuftrag.setEnabled(true);
+			if(dieSteuerung.getAuftragsListe() != null)
+				btnNeuerAuftrag.setEnabled(dieSteuerung.getAuftragsListe().getAnzahl() < 3);
+			else btnNeuerAuftrag.setEnabled(true);
 			btnAbbruchAuftrag.setEnabled(false);
 			btnSchrott.setEnabled(false);
 			btnUmlagern.setEnabled(false);
