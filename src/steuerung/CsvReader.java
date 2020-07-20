@@ -29,6 +29,13 @@ public class CsvReader {
 		}
 		try {
 			String zeile = br.readLine();
+			if(zeile == null) {
+				br.close();
+				fr = new FileReader(csvFile);
+				br = new BufferedReader(fr);
+				br.readLine();
+				zeile = br.readLine();
+			}
 			int i = 0;
 			for(int n = 0; n < zeile.length(); n++)
 				if(zeile.charAt(n) != ';')
@@ -36,7 +43,7 @@ public class CsvReader {
 				else
 					i++;
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return temp;
