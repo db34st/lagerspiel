@@ -200,10 +200,17 @@ public class Steuerung {
     	case leerlauf:
     		if(aFokusRegalFach == null) {
 	    		aFokusRegalFach = dasRegal[pRegalFach];
+	    		dieGui.setBtnRegalFachEnabled(false);
+	    		dieGui.setBtnRegalFachEnabled(true, pRegalFach);
 	    		dieGui.aktualisiereButtons(btnMode.fokusRegal);
     		}
     		else {
     			resetFokusRegalFach();
+    			for(int i = 0; i < 9; i++)
+            		if(dasRegal[i].getProdukt() == null)
+            			dieGui.setBtnRegalFachEnabled(false, i);
+            		else
+            			dieGui.setBtnRegalFachEnabled(true, i);
     			dieGui.aktualisiereButtons(btnMode.leerlauf);
     		}
     		break;
