@@ -142,13 +142,13 @@ public class Start {
 		for(int i = 0; i < 9; i++) {
 			if(pRegal[i].getProdukt() != null) {
 				btnRegalFach[i].setText(pRegal[i].getProdukt().getProduktName()+" - "+pRegal[i].getProdukt().getAttribut2()+" [" + (3-pRegal[i].getTiefe()) +"/3]");
-				btnRegalFach[i].setEnabled(true);
+				setBtnRegalFachEnabled(true, i);
 				setBackground(btnRegalFach[i], pRegal[i].getProdukt().getAttribut1());
 			}
 			else {
 				btnRegalFach[i].setText("leerer Lagerplatz");
-				btnRegalFach[i].setEnabled(false);
 				btnRegalFach[i].setBackground(null);
+				setBtnRegalFachEnabled(false, i);
 			}
 		}
 	}
@@ -188,10 +188,11 @@ public class Start {
 	}
 	public void setBtnRegalFachEnabled(boolean b, int i) {
 		btnRegalFach[i].setEnabled(b);
+		btnRegalFach[i].setBorder(new LineBorder(b ? Color.BLACK : Color.GRAY, b ? 2 : 1));
 	}
 	public void setBtnRegalFachEnabled(boolean b) {
 		for(int i = 0; i < 9; i++)
-			btnRegalFach[i].setEnabled(b);
+			setBtnRegalFachEnabled(b, i);
 	}
 	public void setBtnNeuerAuftragEnabled(boolean b) {
 		btnNeuerAuftrag.setEnabled(b);
@@ -478,7 +479,6 @@ public class Start {
 					fokusAuftrag = null;
 					pnlAuftrag[1].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				}
-				
 			}
 		});
 		pnlAuftrag[2].addMouseListener(new MouseAdapter() {
@@ -496,7 +496,6 @@ public class Start {
 					fokusAuftrag = null;
 					pnlAuftrag[2].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 				}
-				
 			}
 		});
 

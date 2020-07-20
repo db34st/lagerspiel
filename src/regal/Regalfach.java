@@ -64,5 +64,7 @@ public class Regalfach {
 	    	if(!tName.equals(pName) || !tAttr1.equals(pAttr1) || !tAttr2.equals(pAttr2))
 	    		throw new AuftragsException(Ursache.nichtPassenderAuftrag);
     	}
+    	else
+    		throw new AuftragsException(Ursache.regalLeer);
     }
 }

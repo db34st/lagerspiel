@@ -116,7 +116,6 @@ public class Steuerung {
 		} catch (RegalException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
 		}
-    	
     }
     public void umlagern(Regalfach ziel) throws Exception {
     	if(modus == mode.leerlauf && aFokusRegalFach != null) {
@@ -144,7 +143,7 @@ public class Steuerung {
 	    		}
     		}
     		else {
-    			dieGui.aktualisiereButtons();
+    			dieGui.aktualisiereButtons(btnMode.leerlauf);
     			for(int i = 0; i < 9; i++)
             		if(dasRegal[i].getProdukt() == null)
             			dieGui.setBtnRegalFachEnabled(false, i);
@@ -164,9 +163,9 @@ public class Steuerung {
 			modus = mode.auslagern;
 		dieGui.aktualisiereButtons(btnMode.fokusAuftrag);
 		for(int i = 0; i < 9; i++) {
+			dieGui.setBtnRegalFachEnabled(false, i);
 			if(modus == mode.einlagern) {
 				try {
-					//probiert alle Regale durch, nur die, die möglich sind, werden auf eneabled geschaltet
 					aFokusAuftrag.getProdukt().pruefeObEinlagerbar(dasRegal[i].getPosX(), dasRegal[i].getPosY(), dasRegal[i].getTiefe());
 					dieGui.setBtnRegalFachEnabled(true, i);
 				} catch(RegalException e) {}
@@ -207,6 +206,7 @@ public class Steuerung {
     	case umlagern:
     		try {
     			umlagern(dasRegal[pRegalFach]);
+    			dieGui.aktualisiereGui();
     			dieGui.aktualisiereButtons(btnMode.leerlauf);
     		}
     		catch (Exception e) {
@@ -217,6 +217,7 @@ public class Steuerung {
     }
     public void resetFokusAuftrag() {
     	aFokusAuftrag = null;
+    	modus = mode.leerlauf;
     	for(int i = 0; i < 9; i++)
     		if(dasRegal[i].getProdukt() == null)
     			dieGui.setBtnRegalFachEnabled(false, i);
@@ -226,6 +227,7 @@ public class Steuerung {
     }
     public void resetFokusRegalFach() {
     	aFokusRegalFach = null;
+    	modus = mode.leerlauf;
     }
     public void resetAuftragsListe() {
     	dieAuftragsListe = null;
