@@ -91,7 +91,7 @@ public class Start {
 			if(a.getProdukt()!=null) {
 				String  name = a.getProdukt().getProduktName(),
 						belohnung = Integer.toString(a.getBelohnung()),
-						art = a.getAuftragsArt().equals("Einlagerung") ? "/\\" : "\\/",
+						art = a.getAuftragsArt() == AuftragsArt.einlagern ? "/\\" : "\\/",
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
 				temp[i] = art + "   " + name + "  " + sign+belohnung + " €";
 			}
@@ -188,7 +188,6 @@ public class Start {
 			case "Eiche":
 				pnl.setBackground(new Color(0x886A08));
 				break;
-				
 			case "Marmor":
 				pnl.setBackground(new Color(0xF2F2F2));
 				break;
