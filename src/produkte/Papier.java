@@ -3,7 +3,7 @@ package produkte;
 import enums.Ursache;
 import exceptions.RegalException;
 
-public class Papier extends Produkt{
+public class Papier extends Produkt{ // Matrikel-Nr: 2832690
     public Papier(String aAttribut1, String aAttribut2){
         super(aAttribut1, aAttribut2);
         aProduktName = "Papier";

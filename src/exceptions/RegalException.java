@@ -2,7 +2,7 @@ package exceptions;
 import enums.*;
 
 @SuppressWarnings("serial")
-public class RegalException extends Exception{
+public class RegalException extends Exception{ // Matrikel-Nr: 2832690
 	String errMessage = "Fehler im Regal: ";
 	public RegalException(Ursache u) {
 		super();

@@ -13,7 +13,7 @@ import gui.Start.btnMode;
 import produkte.Produkt;
 import regal.Regalfach;
 
-public class Steuerung {
+public class Steuerung {  // Matrikel-Nr: 2832690
     Regalfach dasRegal[] = new Regalfach[9];
     Start dieGui;
     CsvReader derScanner;

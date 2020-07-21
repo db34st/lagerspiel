@@ -1,6 +1,6 @@
 package bilanz;
 import auftraege.Auftrag;
-public class Bilanzeintrag {
+public class Bilanzeintrag { // Matrikel-Nr: 2832690
 	private Auftrag aAuftrag;
 	private boolean aAusgefuehrt;
 	public Bilanzeintrag next;

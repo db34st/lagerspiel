@@ -5,7 +5,7 @@ import produkte.*;
 import enums.*;
 import exceptions.AuftragsException;
 import exceptions.RegalException;
-public class Regalfach {
+public class Regalfach { // Matrikel-Nr: 2832690
     int aPosX, aPosY;
     private Inhalt top;
     int anzahl = 0;

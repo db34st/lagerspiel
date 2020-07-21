@@ -1,6 +1,6 @@
 package enums;
 
-public enum Ursache {
+public enum Ursache { // Matrikel-Nr: 2832690
 	schonVoll,
 	regalLeer,
 	schwererSteinMussUnten,

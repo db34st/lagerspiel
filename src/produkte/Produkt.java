@@ -2,7 +2,7 @@ package produkte;
 
 import exceptions.RegalException;
 
-public abstract class Produkt {
+public abstract class Produkt { // Matrikel-Nr: 2832690
     private String aAttribut1, aAttribut2;
     protected String aProduktName;
     public Produkt(String aAttribut1, String aAttribut2){

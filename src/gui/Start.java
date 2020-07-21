@@ -28,7 +28,7 @@ import produkte.Produkt;
 import regal.Regalfach;
 import steuerung.Steuerung;
 
-public class Start {
+public class Start { // Matrikel-Nr: 2832690
 	private JFrame frame;
 	private Steuerung dieSteuerung;
 	private JButton btnNeuerAuftrag, btnAbbruchAuftrag, btnSchrott, btnUmlagern;

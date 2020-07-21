@@ -3,7 +3,7 @@ import produkte.*;
 import enums.AuftragsArt;
 import enums.Ursache;
 import exceptions.AuftragsException;
-public class Auftrag {
+public class Auftrag { // Matrikel-Nr: 2832690
 	static int idCounter;
     private int aId, aBelohnung;
     private AuftragsArt aArt;
