@@ -1,70 +1,53 @@
 package gui;
-import steuerung.Steuerung;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import static org.junit.Assert.assertNotNull;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import java.awt.Font;
-import java.awt.FlowLayout;
-import java.awt.CardLayout;
-import java.awt.Panel;
-import javax.swing.JRadioButton;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.Insets;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 
-import auftraege.*;
-import bilanz.*;
+import auftraege.Auftrag;
+import auftraege.Auftragsliste;
+import bilanz.Bilanz;
 import enums.AuftragsArt;
-import enums.Ursache;
 import exceptions.AuftragsException;
+import produkte.Produkt;
 import regal.Regalfach;
-
-import javax.swing.border.EmptyBorder;
-import java.awt.Component;
-import javax.swing.UIManager;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JTable;
-import javax.swing.JList;
+import steuerung.Steuerung;
 
 public class Start {
-
 	private JFrame frame;
 	private Steuerung dieSteuerung;
 	private JButton btnNeuerAuftrag, btnAbbruchAuftrag, btnSchrott, btnUmlagern;
 	private JPanel pnlLeft, pnlCenter, pnlButtons, pnlAuftraege;
 	private auftrag fokusAuftrag = null;
-	private regal fokusRegalFach = null;
 	private btnMode modus = btnMode.leerlauf;
+	private Color cBlu = new Color(0xE0F8F7),
+				  cGrn = new Color(0xCEF6CE),
+				  cRed = new Color(0xF5A9A9);
+	private int maxAnzahlAuftraege = 3;
+	private JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
+	private JLabel[] lblAuftragsArt = new JLabel[maxAnzahlAuftraege],
+			 		 lblProduktName = new JLabel[maxAnzahlAuftraege],
+			 		 lblProduktAttr1 = new JLabel[maxAnzahlAuftraege],
+			 		 lblProduktAttr2 = new JLabel[maxAnzahlAuftraege],
+			 		 lblBelohnung = new JLabel[maxAnzahlAuftraege];
+	private JButton[] btnRegalFach = new JButton[9];
+	private JList<String> listBilanz;
 	
-	int maxAnzahlAuftraege = 3;
-	JPanel[] pnlAuftrag = new JPanel[maxAnzahlAuftraege];
-	JLabel[] lblAuftragsArt = new JLabel[maxAnzahlAuftraege],
-			 lblProduktName = new JLabel[maxAnzahlAuftraege],
-			 lblProduktAttr1 = new JLabel[maxAnzahlAuftraege],
-			 lblProduktAttr2 = new JLabel[maxAnzahlAuftraege],
-			 lblBelohnung = new JLabel[maxAnzahlAuftraege];
-	JButton[] btnRegalFach = new JButton[9];
-	JList<String> listBilanz;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -77,7 +60,6 @@ public class Start {
 			}
 		});
 	}
-
 	public Start() {
 		initialize();
 		dieSteuerung = new Steuerung(this);
@@ -87,7 +69,84 @@ public class Start {
 		aktualisiereAuftragsListe(dieSteuerung.getAuftragsListe());
 		aktualisiereRegal(dieSteuerung.getRegal());
 		aktualisiereButtons();
-	}	
+	}
+	public void aktualisiereButtons() {
+		switch(modus) {
+		case fokusAuftrag:
+			btnNeuerAuftrag.setEnabled(false);
+			btnNeuerAuftrag.setBackground(null);			
+			btnAbbruchAuftrag.setEnabled(true);
+			btnAbbruchAuftrag.setBackground(cRed);
+			btnSchrott.setEnabled(false);
+			btnSchrott.setBackground(null);
+			btnUmlagern.setEnabled(false);
+			btnUmlagern.setBackground(null);
+			break;
+		case fokusRegal:
+			btnNeuerAuftrag.setEnabled(false);
+			btnNeuerAuftrag.setBackground(null);
+			btnAbbruchAuftrag.setEnabled(false);
+			btnAbbruchAuftrag.setBackground(null);
+			btnSchrott.setEnabled(true);
+			btnSchrott.setBackground(cRed);
+			btnUmlagern.setEnabled(true);
+			btnUmlagern.setBackground(cGrn);
+			break;
+		case umlagern:
+			btnNeuerAuftrag.setEnabled(false);
+			btnNeuerAuftrag.setBackground(null);
+			btnAbbruchAuftrag.setEnabled(false);
+			btnAbbruchAuftrag.setBackground(null);
+			btnSchrott.setEnabled(false);
+			btnSchrott.setBackground(null);
+			btnUmlagern.setEnabled(true);
+			btnUmlagern.setBackground(cGrn);
+			break;
+		case leerlauf:
+			if(dieSteuerung.getAuftragsListe() != null) {
+				boolean b = dieSteuerung.getAuftragsListe().getAnzahl() < 3;
+				btnNeuerAuftrag.setEnabled(b);
+				btnNeuerAuftrag.setBackground(b ? cGrn : null);
+			}
+			else {
+				btnNeuerAuftrag.setEnabled(true);
+				btnNeuerAuftrag.setBackground(cGrn);
+			}
+			btnAbbruchAuftrag.setEnabled(false);
+			btnAbbruchAuftrag.setBackground(null);
+			btnSchrott.setEnabled(false);
+			btnSchrott.setBackground(null);
+			btnUmlagern.setEnabled(false);
+			btnUmlagern.setBackground(null);
+    		break;
+		default:
+			break;
+		}
+	}
+	public void aktualisiereButtons(btnMode modus) {
+		this.modus = modus;
+		aktualisiereButtons();
+	}
+	public void setBtnRegalFachEnabled(boolean b, int i) {
+		btnRegalFach[i].setEnabled(b);
+		btnRegalFach[i].setBorder(new LineBorder(b ? Color.BLACK : Color.GRAY, b ? 5 : 1));
+	}
+	public void setBtnRegalFachEnabled(boolean b) {
+		for(int i = 0; i < 9; i++)
+			setBtnRegalFachEnabled(b, i);
+	}
+	public void setBtnNeuerAuftragEnabled(boolean b) {
+		btnNeuerAuftrag.setEnabled(b);
+	}
+	public void setBtnAbbruchAuftragEnabled(boolean b) {
+		btnAbbruchAuftrag.setEnabled(b);
+	}
+	public void setBtnSchrottEnabled(boolean b) {
+		btnSchrott.setEnabled(b);
+	}
+	public void setBtnUmlagernEnabled(boolean b) {
+		btnUmlagern.setEnabled(b);
+	}
 	private void aktualisiereBilanz(Bilanz pBilanz) {
 		String[] temp = new String[pBilanz.getAnzahl() + 1];
 		temp[0] = "Bilanz: " + pBilanz.getKontoStand() + " €";
@@ -122,9 +181,10 @@ public class Start {
 			pnlAuftrag[i].setVisible(false);
 			auftraege[i] = pListe.getAuftrag(i);
 			if(auftraege[i] != null) {
-				lblProduktName[i].setText(auftraege[i].getProdukt().getProduktName());
-				lblProduktAttr1[i].setText(auftraege[i].getProdukt().getAttribut1());
-				lblProduktAttr2[i].setText(auftraege[i].getProdukt().getAttribut2());
+				Produkt p = auftraege[i].getProdukt();
+				lblProduktName[i].setText(p.getProduktName());
+				lblProduktAttr1[i].setText(p.getAttribut1());
+				lblProduktAttr2[i].setText(p.getAttribut2());
 				lblBelohnung[i].setText(auftraege[i].getBelohnung() + "€");
 				if(auftraege[i].getAuftragsArt() == AuftragsArt.einlagern)
 					lblAuftragsArt[i].setText("  /\\");
@@ -152,64 +212,6 @@ public class Start {
 			}
 		}
 	}
-	public void aktualisiereButtons() {
-		switch(modus) {
-		case fokusAuftrag:
-			btnNeuerAuftrag.setEnabled(false);
-			btnAbbruchAuftrag.setEnabled(true);
-			btnSchrott.setEnabled(false);
-			btnUmlagern.setEnabled(false);
-			break;
-		case fokusRegal:
-			btnNeuerAuftrag.setEnabled(false);
-			btnAbbruchAuftrag.setEnabled(false);
-			btnSchrott.setEnabled(true);
-			btnUmlagern.setEnabled(true);
-			break;
-		case umlagern:
-			btnNeuerAuftrag.setEnabled(false);
-			btnAbbruchAuftrag.setEnabled(false);
-			btnSchrott.setEnabled(false);
-			btnUmlagern.setEnabled(true);
-			break;
-		case leerlauf:
-			if(dieSteuerung.getAuftragsListe() != null)
-				btnNeuerAuftrag.setEnabled(dieSteuerung.getAuftragsListe().getAnzahl() < 3);
-			else
-				btnNeuerAuftrag.setEnabled(true);
-			btnAbbruchAuftrag.setEnabled(false);
-			btnSchrott.setEnabled(false);
-			btnUmlagern.setEnabled(false);
-    		break;
-		default:
-			break;
-		}
-	}
-	public void aktualisiereButtons(btnMode modus) {
-		this.modus = modus;
-		aktualisiereButtons();
-	}
-	public void setBtnRegalFachEnabled(boolean b, int i) {
-		btnRegalFach[i].setEnabled(b);
-		btnRegalFach[i].setBorder(new LineBorder(b ? Color.BLACK : Color.GRAY, b ? 5 : 1));
-	}
-	public void setBtnRegalFachEnabled(boolean b) {
-		for(int i = 0; i < 9; i++)
-			setBtnRegalFachEnabled(b, i);
-	}
-	public void setBtnNeuerAuftragEnabled(boolean b) {
-		btnNeuerAuftrag.setEnabled(b);
-	}
-	public void setBtnAbbruchAuftragEnabled(boolean b) {
-		btnAbbruchAuftrag.setEnabled(b);
-	}
-	public void setBtnSchrottEnabled(boolean b) {
-		btnSchrott.setEnabled(b);
-	}
-	public void setBtnUmlagernEnabled(boolean b) {
-		btnUmlagern.setEnabled(b);
-	}
-	
 	private void setBackground(JLabel lbl, JPanel pnl) {
 		switch(lbl.getText()) {
 			case "Weiß":
@@ -285,19 +287,16 @@ public class Start {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel pnlTop = new JPanel();
-		pnlTop.setBackground(Color.WHITE);
+		pnlTop.setBackground(cBlu);
 		frame.getContentPane().add(pnlTop, BorderLayout.NORTH);
 		
-		JLabel lblNewLabel_2 = new JLabel("Lagerspiel");
-		lblNewLabel_2.setFont(new Font("Arial", Font.PLAIN, 50));
-		pnlTop.add(lblNewLabel_2);
+		JLabel lblTitle = new JLabel("Lagerspiel");
+		lblTitle.setFont(new Font("Arial", Font.PLAIN, 50));
+		pnlTop.add(lblTitle);
 		
 		pnlCenter = new JPanel();
-		pnlCenter.setOpaque(false);
-		pnlCenter.setSize(new Dimension(300, 300));
-		pnlCenter.setMinimumSize(new Dimension(300, 300));
-		pnlCenter.setMaximumSize(new Dimension(300, 300));
 		pnlCenter.setPreferredSize(new Dimension(300, 300));
+		pnlCenter.setBackground(Color.WHITE);
 		frame.getContentPane().add(pnlCenter, BorderLayout.CENTER);
 		
 		initBilanzListe();
@@ -307,6 +306,8 @@ public class Start {
 	}
 	private void initBilanzListe() {
 		pnlLeft = new JPanel();
+		pnlLeft.setBackground(cBlu);
+		
 		frame.getContentPane().add(pnlLeft, BorderLayout.WEST);
 		pnlLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		pnlLeft.setPreferredSize(new Dimension(250, 150));
@@ -375,24 +376,27 @@ public class Start {
 	}
 	private void initPnlButtons() {
 		pnlButtons = new JPanel();
+		pnlButtons.setBackground(Color.WHITE);
 		
 		btnNeuerAuftrag = new JButton("Neuer Auftrag");
+		btnNeuerAuftrag.setBackground(cGrn);
 		btnNeuerAuftrag.setPreferredSize(new Dimension(140,50));
 		btnNeuerAuftrag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dieSteuerung.resetFokusAuftrag();
-				dieSteuerung.resetFokusRegalFach();
 				try {
 					Auftragsliste liste = dieSteuerung.neuerAuftrag();
 					aktualisiereAuftragsListe(liste);
 				} catch (AuftragsException f) {
 					System.out.println(f.getMessage());
 				}
+				dieSteuerung.resetFokusAuftrag();
+				dieSteuerung.resetFokusRegalFach();
 			}
 		});
 		pnlButtons.add(btnNeuerAuftrag);
 		
 		btnAbbruchAuftrag = new JButton("Auftrag abbrechen");
+		btnAbbruchAuftrag.setBackground(null);
 		btnAbbruchAuftrag.setPreferredSize(new Dimension(140,50));
 		btnAbbruchAuftrag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -403,6 +407,7 @@ public class Start {
 		pnlButtons.add(btnAbbruchAuftrag);
 		
 		btnSchrott = new JButton("Verschrotten");
+		btnSchrott.setBackground(null);
 		btnSchrott.setPreferredSize(new Dimension(110,50));
 		btnSchrott.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -413,6 +418,7 @@ public class Start {
 		pnlButtons.add(btnSchrott);
 		
 		btnUmlagern = new JButton("Umlagern");
+		btnUmlagern.setBackground(null);
 		btnUmlagern.setPreferredSize(new Dimension(110,50));
 		btnUmlagern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -431,24 +437,20 @@ public class Start {
 	}
 	private void initPnlAuftraege() {
 		pnlAuftraege = new JPanel();
-		pnlAuftraege.setBorder(UIManager.getBorder("DesktopIcon.border"));
-		pnlCenter.add(pnlAuftraege);
-		pnlAuftraege.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		pnlAuftraege.setBorder(UIManager.getBorder("DesktopIcon.border"));		pnlAuftraege.setBackground(new Color(0xE0F8F1));;
+		pnlAuftraege.setFont(new Font("Tahoma", Font.PLAIN, 36));		pnlCenter.add(pnlAuftraege);		
 		
-		
-		JPanel pnl1 = new JPanel();
-		pnl1.setPreferredSize(new Dimension(500, 200));
-		pnl1.setMaximumSize(new Dimension(500, 32767));
-		pnl1.setBorder(new LineBorder(new Color(0, 0, 0), 1));
-		pnlAuftraege.add(pnl1);
+		JPanel pnlAuftragsListe = new JPanel();
+		pnlAuftragsListe.setPreferredSize(new Dimension(500, 200));
+		pnlAuftragsListe.setBackground(cBlu);
+		pnlAuftraege.add(pnlAuftragsListe);
 		
 		for(int n = 0; n < maxAnzahlAuftraege; n++) {
 			pnlAuftrag[n] = new JPanel();
 			pnlAuftrag[n].setPreferredSize(new Dimension(400, 50));
-			pnlAuftrag[n].setMaximumSize(new Dimension(400, 32767));
 			pnlAuftrag[n].setBorder(new LineBorder(new Color(0, 0, 0), 1));
 			pnlAuftrag[n].setVisible(false);
-			pnl1.add(pnlAuftrag[n]);			
+			pnlAuftragsListe.add(pnlAuftrag[n]);			
 		}
 		pnlAuftrag[0].addMouseListener(new MouseAdapter() {
 			@Override
@@ -536,16 +538,5 @@ public class Start {
 		a0,
 		a1,
 		a2
-	}
-	private enum regal{
-		r0,
-		r1,
-		r2,
-		r3,
-		r4,
-		r5,
-		r6,
-		r7,
-		r8
 	}
 }

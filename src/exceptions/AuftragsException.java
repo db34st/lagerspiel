@@ -2,6 +2,7 @@ package exceptions;
 
 import enums.Ursache;
 
+@SuppressWarnings("serial")
 public class AuftragsException extends Exception{
 	String errMessage = "Auftragsfehler: ";
 	public AuftragsException(Ursache u) {

@@ -1,6 +1,7 @@
 package exceptions;
 import enums.*;
 
+@SuppressWarnings("serial")
 public class RegalException extends Exception{
 	String errMessage = "Fehler im Regal: ";
 	public RegalException(Ursache u) {
@@ -17,6 +18,8 @@ public class RegalException extends Exception{
 			break;
 		case holzBalkenBrauchtDrei:
 			errMessage += "Ein Holzbalken braucht ein ganz leeres Regalfach mit drei freien Plätzen hintereinander!";
+			break;
+		default:
 			break;
 		}
 	}
