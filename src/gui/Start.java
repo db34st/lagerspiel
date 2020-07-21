@@ -284,6 +284,7 @@ public class Start { // Matrikel-Nr: 2832690
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 878, 910);
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel pnlTop = new JPanel();
