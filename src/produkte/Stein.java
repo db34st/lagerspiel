@@ -11,7 +11,6 @@ public class Stein extends Produkt{ // Matrikel-Nr: 2832690
     public void pruefeObEinlagerbar(int posX, int posY, int regalTiefe) throws RegalException{
     	if(regalTiefe <= 0)
     		throw new RegalException(Ursache.schonVoll);
-    	
         if(getAttribut2().equals("Schwer") && posY != 2)
         	throw new RegalException(Ursache.schwererSteinMussUnten);
     }

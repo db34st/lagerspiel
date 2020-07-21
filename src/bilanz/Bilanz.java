@@ -2,6 +2,7 @@ package bilanz;
 
 public class Bilanz { // Matrikel-Nr: 2832690
     private Bilanzeintrag anf, pos;
+    
     int kontostand = 0,
     	anzahl = 0;
     public Bilanz(Bilanzeintrag pEintrag) {

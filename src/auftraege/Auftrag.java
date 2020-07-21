@@ -12,7 +12,6 @@ public class Auftrag { // Matrikel-Nr: 2832690
     public Auftrag(String[] temp) {
     	try {
 			aId = idCounter++;
-			
 			aArt = temp[1].equals("Einlagerung") ? AuftragsArt.einlagern : AuftragsArt.auslagern;
 			aBelohnung = Integer.parseInt(temp[5]);
 	    	switch(temp[2]) {

@@ -156,8 +156,6 @@ public class Steuerung {  // Matrikel-Nr: 2832690
 		} catch (RegalException e) {
 			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
 		}
-    	
-    	
     }
     private void auslagern(Auftrag pAuftrag, Regalfach pRegalFach) {
     	Produkt ap = pAuftrag.getProdukt(),		//ap = AuftragsProdukt
@@ -183,7 +181,6 @@ public class Steuerung {  // Matrikel-Nr: 2832690
     			JOptionPane.showMessageDialog(null,e.getMessage(),"Regalfehler", JOptionPane.CANCEL_OPTION);
     		}
     	}
-    	
     }
     public void brichAuftragAb() {
     	if(aFokusAuftrag != null) {
@@ -200,7 +197,6 @@ public class Steuerung {  // Matrikel-Nr: 2832690
     		} catch (AuftragsException e) {
     			JOptionPane.showMessageDialog(null,e.getMessage(),"Auftragsfehler", JOptionPane.ERROR_MESSAGE);
     		}
-    		
     	}
     }
     public void verschrotten() {

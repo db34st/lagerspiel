@@ -266,7 +266,6 @@ public class Start { // Matrikel-Nr: 2832690
 			case "Eiche":
 				btn.setBackground(new Color(0x886A08));
 				break;
-				
 			case "Marmor":
 				btn.setBackground(new Color(0xF2F2F2));
 				break;
