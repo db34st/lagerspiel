@@ -321,9 +321,8 @@ public class Start { // Matrikel-Nr: 2832690
 	private void initBtnRegalFach() {
 		UIManager.put("Button.disabledText", new ColorUIResource(Color.BLACK));
 		for(int n = 0; n < 9; n++) {
-			btnRegalFach[n] = new JButton("Lagerplatz");
+			btnRegalFach[n] = new JButton("leerer Lagerplatz");
 			btnRegalFach[n].setPreferredSize(new Dimension(150, 150));
-			btnRegalFach[n].setText("leerer Lagerplatz");
 			btnRegalFach[n].setEnabled(false);
 			btnRegalFach[n].setBackground(null);
 			pnlCenter.add(btnRegalFach[n]);
