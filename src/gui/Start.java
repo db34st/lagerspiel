@@ -3,7 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
@@ -29,10 +29,10 @@ import regal.Regalfach;
 import steuerung.Steuerung;
 
 public class Start { // Matrikel-Nr: 2832690
-	private JFrame frame;
+	private JFrame mainFrame, bilanzFrame;
 	private Steuerung dieSteuerung;
-	private JButton btnNeuerAuftrag, btnAbbruchAuftrag, btnSchrott, btnUmlagern;
-	private JPanel pnlLeft, pnlCenter, pnlButtons, pnlAuftraege;
+	private JButton btnNeuerAuftrag, btnAbbruchAuftrag, btnSchrott, btnUmlagern, btnBilanz;
+	private JPanel pnlCenter, pnlButtons, pnlAuftraege, pnlBilanz;
 	private auftrag fokusAuftrag = null;
 	private btnMode modus = btnMode.leerlauf;
 	private Color cBlu = new Color(0xE0F8F7),
@@ -45,6 +45,7 @@ public class Start { // Matrikel-Nr: 2832690
 			 		 lblProduktAttr1 = new JLabel[maxAnzahlAuftraege],
 			 		 lblProduktAttr2 = new JLabel[maxAnzahlAuftraege],
 			 		 lblBelohnung = new JLabel[maxAnzahlAuftraege];
+	private JLabel lblBilanz;
 	private JButton[] btnRegalFach = new JButton[9];
 	private JList<String> listBilanz;
 	
@@ -53,7 +54,7 @@ public class Start { // Matrikel-Nr: 2832690
 			public void run() {
 				try {
 					Start window = new Start();
-					window.frame.setVisible(true);
+					window.mainFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -148,32 +149,32 @@ public class Start { // Matrikel-Nr: 2832690
 		btnUmlagern.setEnabled(b);
 	}
 	private void aktualisiereBilanz(Bilanz pBilanz) {
+		lblBilanz.setText("Bilanz: " + pBilanz.getKontoStand() + " €");
 		String[] temp = new String[pBilanz.getAnzahl() + 1];
 		temp[0] = "Bilanz: " + pBilanz.getKontoStand() + " €";
 		pBilanz.reset();
 		for (int i = 1; i < temp.length; i++) {
 			Auftrag a = pBilanz.elem().getAuftrag();
-			if(a.getProdukt()!=null) {
+			if(a.getProdukt() != null) {
 				String  name = a.getProdukt().getProduktName(),
 						belohnung = Integer.toString(a.getBelohnung()),
 						art = a.getAuftragsArt() == AuftragsArt.einlagern ? "/\\" : "\\/",
 						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-				temp[i] = art + "   " + name + "  " + sign+belohnung + " €";
+				temp[i] = art + "   " + name + "  " + sign + belohnung + " €";
 			}
-			else{
+			else {
 				AuftragsArt art = a.getAuftragsArt();
 				String  name = art == AuftragsArt.umlagern ? "Umlagern" :
 							   art == AuftragsArt.verschrotten ? "Verschrotten" :
 							   art == AuftragsArt.abbruch ? "Strafe" : "",
 						belohnung = Integer.toString(a.getBelohnung()),
-						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-				temp[i] = name + "  " + sign+belohnung + " €";
+						sign = pBilanz.elem().getAusgefuehrt() ? "+" : "-";
+				temp[i] = name + " " + sign + belohnung + " €";
 			}
-			pBilanz.advance();	
+			pBilanz.advance();
 		}
-		pBilanz.reset();
-		listBilanz.setListData(temp);
-		
+		if(listBilanz != null)
+			listBilanz.setListData(temp);
 	}
 	private void aktualisiereAuftragsListe(Auftragsliste pListe){
 		Auftrag[] auftraege = new Auftrag[3];
@@ -281,14 +282,14 @@ public class Start { // Matrikel-Nr: 2832690
 		}
 	}
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 878, 910);
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame = new JFrame();
+		mainFrame.setBounds(100, 100, 628, 930);
+		mainFrame.setResizable(false);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel pnlTop = new JPanel();
 		pnlTop.setBackground(cBlu);
-		frame.getContentPane().add(pnlTop, BorderLayout.NORTH);
+		mainFrame.getContentPane().add(pnlTop, BorderLayout.NORTH);
 		
 		JLabel lblTitle = new JLabel("Lagerspiel");
 		lblTitle.setFont(new Font("Arial", Font.PLAIN, 50));
@@ -297,26 +298,12 @@ public class Start { // Matrikel-Nr: 2832690
 		pnlCenter = new JPanel();
 		pnlCenter.setPreferredSize(new Dimension(300, 300));
 		pnlCenter.setBackground(Color.WHITE);
-		frame.getContentPane().add(pnlCenter, BorderLayout.CENTER);
+		mainFrame.getContentPane().add(pnlCenter, BorderLayout.CENTER);
 		
-		initBilanzListe();
 		initBtnRegalFach();
 		initPnlButtons();
 		initPnlAuftraege();
-	}
-	private void initBilanzListe() {
-		pnlLeft = new JPanel();
-		pnlLeft.setBackground(cBlu);
-		
-		frame.getContentPane().add(pnlLeft, BorderLayout.WEST);
-		pnlLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		pnlLeft.setPreferredSize(new Dimension(250, 150));
-		listBilanz = new JList<String>();
-		String[] temp = new String[1];
-		temp[0] = "Bilanz: 0 €";
-		listBilanz.setListData(temp);
-		listBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
-		pnlLeft.add(listBilanz);
+		initPnlBilanz();
 	}
 	private void initBtnRegalFach() {
 		UIManager.put("Button.disabledText", new ColorUIResource(Color.BLACK));
@@ -442,7 +429,7 @@ public class Start { // Matrikel-Nr: 2832690
 		JPanel pnlAuftragsListe = new JPanel();
 		pnlAuftragsListe.setPreferredSize(new Dimension(500, 200));
 		pnlAuftragsListe.setBackground(cBlu);
-		pnlAuftraege.add(pnlAuftragsListe);
+		pnlAuftraege.add(pnlAuftragsListe);		
 		
 		for(int n = 0; n < maxAnzahlAuftraege; n++) {
 			pnlAuftrag[n] = new JPanel();
@@ -527,6 +514,76 @@ public class Start { // Matrikel-Nr: 2832690
 			pnlAuftrag[n].add(lblAuftragsArt[n]);
 		}
 	}
+	private void initPnlBilanz() {
+		pnlBilanz = new JPanel();
+		pnlBilanz.setBackground(Color.WHITE);
+		
+		lblBilanz = new JLabel("Bilanz: 0 €");
+		lblBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
+		lblBilanz.setPreferredSize(new Dimension(370,50));
+		pnlBilanz.add(lblBilanz);
+		
+		btnBilanz = new JButton("Zeige Bilanzliste");
+		btnBilanz.setBackground(cBlu);
+		btnBilanz.setPreferredSize(new Dimension(140,50));
+		btnBilanz.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				initBilanzListe();
+			}
+		});
+		pnlBilanz.add(btnBilanz);
+		
+		pnlCenter.add(pnlBilanz);
+	}
+	private void initBilanzListe() {
+		JPanel pnlBilanzListe = new JPanel();
+		String[] temp;
+		btnBilanz.setEnabled(false);
+		btnBilanz.setBackground(Color.WHITE);
+		listBilanz = new JList<String>();
+		bilanzFrame = new JFrame();
+		bilanzFrame.setBounds(100, 100, 300, 300);
+		bilanzFrame.setResizable(false);
+		bilanzFrame.setVisible(true);
+		bilanzFrame.setTitle("Bilanz");
+		Bilanz pBilanz = dieSteuerung.getBilanz();
+		if(pBilanz == null) {
+			temp = new String[1];
+			temp[0] = "Bilanz: 0 €";
+		}
+		else {
+			temp = new String[pBilanz.getAnzahl() + 1];
+			temp[0] = "Bilanz: " + pBilanz.getKontoStand() + " €";
+			pBilanz.reset();
+			for (int i = 1; i < temp.length; i++) {
+				Auftrag a = pBilanz.elem().getAuftrag();
+				if(a.getProdukt() != null) {
+					String  name = a.getProdukt().getProduktName(),
+							belohnung = Integer.toString(a.getBelohnung()),
+							art = a.getAuftragsArt() == AuftragsArt.einlagern ? "/\\" : "\\/",
+							sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
+					temp[i] = art + "   " + name + "  " + sign + belohnung + " €";
+				}
+				else {
+					AuftragsArt art = a.getAuftragsArt();
+					String  name = art == AuftragsArt.umlagern ? "Umlagern" :
+								   art == AuftragsArt.verschrotten ? "Verschrotten" :
+								   art == AuftragsArt.abbruch ? "Strafe" : "",
+							belohnung = Integer.toString(a.getBelohnung()),
+							sign = pBilanz.elem().getAusgefuehrt() ? "+" : "-";
+					temp[i] = name + " " + sign + belohnung + " €";
+				}
+				pBilanz.advance();
+			}
+			pBilanz.reset();
+		}
+		listBilanz.setListData(temp);
+		listBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
+		JScrollPane scrollBilanz = new JScrollPane(listBilanz);
+		scrollBilanz.setPreferredSize(new Dimension(280, 255));;
+		pnlBilanzListe.add(scrollBilanz);
+		bilanzFrame.add(pnlBilanzListe);
+	}	
 	public enum btnMode{
 		fokusAuftrag,
 		fokusRegal,
