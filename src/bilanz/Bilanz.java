@@ -41,11 +41,12 @@ public class Bilanz { // Matrikel-Nr: 2832690
     	return kontostand;
     }
     public String[] getString() {
-    	String[] r = new String[anzahl + 1];
+    	String[] r = new String[anzahl + 2];
 		r[0] = "Bilanz: " + kontostand + " €";
+		r[1] = "-------------------------------";
 		reset();
 		for (int i = 0; i < anzahl; i++) {
-			r[i+1] = pos.getString();
+			r[i+2] = pos.getString();
 			advance();
 		}
 		reset();

@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -264,6 +265,8 @@ public class Start { // Matrikel-Nr: 2832690
 		mainFrame = new JFrame();
 		mainFrame.setBounds(100, 100, 628, 930);
 		mainFrame.setResizable(false);
+		mainFrame.setTitle("SuperStorageSell");
+		mainFrame.setIconImage(new ImageIcon("icon.png").getImage());
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel pnlTop = new JPanel();
@@ -521,10 +524,11 @@ public class Start { // Matrikel-Nr: 2832690
 		btnBilanz.setBackground(Color.WHITE);
 		listBilanz = new JList<String>();
 		bilanzFrame = new JFrame();
-		bilanzFrame.setBounds(100, 100, 300, 300);
+		bilanzFrame.setBounds(100, 100, 300, 500);
 		bilanzFrame.setResizable(false);
 		bilanzFrame.setVisible(true);
 		bilanzFrame.setTitle("Bilanz");
+		bilanzFrame.setIconImage(new ImageIcon("icon.png").getImage());
 		bilanzFrame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
 				btnBilanz.setBackground(cBlu);
@@ -541,7 +545,7 @@ public class Start { // Matrikel-Nr: 2832690
 		listBilanz.setListData(temp);
 		listBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
 		JScrollPane scrollBilanz = new JScrollPane(listBilanz);
-		scrollBilanz.setPreferredSize(new Dimension(280, 255));;
+		scrollBilanz.setPreferredSize(new Dimension(280, 455));;
 		pnlBilanzListe.add(scrollBilanz);
 		bilanzFrame.add(pnlBilanzListe);
 	}	
