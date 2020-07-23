@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -523,6 +525,12 @@ public class Start { // Matrikel-Nr: 2832690
 		bilanzFrame.setResizable(false);
 		bilanzFrame.setVisible(true);
 		bilanzFrame.setTitle("Bilanz");
+		bilanzFrame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				btnBilanz.setBackground(cBlu);
+				btnBilanz.setEnabled(true);
+			}
+		});
 		
 		Bilanz pBilanz = dieSteuerung.getBilanz();
 		if(pBilanz == null) {
