@@ -26,9 +26,9 @@ public class Bilanz { // Matrikel-Nr: 2832690
     }
     public void neuerEintrag(Bilanzeintrag pEintrag) {
     	if(pEintrag.getAusgefuehrt())
-    		kontostand+=pEintrag.getAuftrag().getBelohnung();
+    		kontostand += pEintrag.getAuftrag().getBelohnung();
     	else
-    		kontostand-=pEintrag.getAuftrag().getBelohnung();
+    		kontostand -= pEintrag.getAuftrag().getBelohnung();
     	reset();
     	pEintrag.next = pos;
     	anf = pos = pEintrag;
@@ -39,5 +39,16 @@ public class Bilanz { // Matrikel-Nr: 2832690
     }
     public int getKontoStand() {
     	return kontostand;
+    }
+    public String[] getString() {
+    	String[] r = new String[anzahl + 1];
+		r[0] = "Bilanz: " + kontostand + " €";
+		reset();
+		for (int i = 0; i < anzahl; i++) {
+			r[i+1] = pos.getString();
+			advance();
+		}
+		reset();
+    	return r;
     }
 }

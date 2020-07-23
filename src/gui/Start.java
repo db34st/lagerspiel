@@ -150,31 +150,8 @@ public class Start { // Matrikel-Nr: 2832690
 	}
 	private void aktualisiereBilanz(Bilanz pBilanz) {
 		lblBilanz.setText("Bilanz: " + pBilanz.getKontoStand() + " €");
-		String[] temp = new String[pBilanz.getAnzahl() + 1];
-		temp[0] = "Bilanz: " + pBilanz.getKontoStand() + " €";
-		pBilanz.reset();
-		for (int i = 1; i < temp.length; i++) {
-			Auftrag a = pBilanz.elem().getAuftrag();
-			if(a.getProdukt() != null) {
-				String  name = a.getProdukt().getProduktName(),
-						belohnung = Integer.toString(a.getBelohnung()),
-						art = a.getAuftragsArt() == AuftragsArt.einlagern ? "/\\" : "\\/",
-						sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-				temp[i] = art + "   " + name + "  " + sign + belohnung + " €";
-			}
-			else {
-				AuftragsArt art = a.getAuftragsArt();
-				String  name = art == AuftragsArt.umlagern ? "Umlagern" :
-							   art == AuftragsArt.verschrotten ? "Verschrotten" :
-							   art == AuftragsArt.abbruch ? "Strafe" : "",
-						belohnung = Integer.toString(a.getBelohnung()),
-						sign = pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-				temp[i] = name + " " + sign + belohnung + " €";
-			}
-			pBilanz.advance();
-		}
 		if(listBilanz != null)
-			listBilanz.setListData(temp);
+			listBilanz.setListData(pBilanz.getString());
 	}
 	private void aktualisiereAuftragsListe(Auftragsliste pListe){
 		Auftrag[] auftraege = new Auftrag[3];
@@ -546,37 +523,13 @@ public class Start { // Matrikel-Nr: 2832690
 		bilanzFrame.setResizable(false);
 		bilanzFrame.setVisible(true);
 		bilanzFrame.setTitle("Bilanz");
+		
 		Bilanz pBilanz = dieSteuerung.getBilanz();
 		if(pBilanz == null) {
 			temp = new String[1];
 			temp[0] = "Bilanz: 0 €";
 		}
-		else {
-			temp = new String[pBilanz.getAnzahl() + 1];
-			temp[0] = "Bilanz: " + pBilanz.getKontoStand() + " €";
-			pBilanz.reset();
-			for (int i = 1; i < temp.length; i++) {
-				Auftrag a = pBilanz.elem().getAuftrag();
-				if(a.getProdukt() != null) {
-					String  name = a.getProdukt().getProduktName(),
-							belohnung = Integer.toString(a.getBelohnung()),
-							art = a.getAuftragsArt() == AuftragsArt.einlagern ? "/\\" : "\\/",
-							sign =  pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-					temp[i] = art + "   " + name + "  " + sign + belohnung + " €";
-				}
-				else {
-					AuftragsArt art = a.getAuftragsArt();
-					String  name = art == AuftragsArt.umlagern ? "Umlagern" :
-								   art == AuftragsArt.verschrotten ? "Verschrotten" :
-								   art == AuftragsArt.abbruch ? "Strafe" : "",
-							belohnung = Integer.toString(a.getBelohnung()),
-							sign = pBilanz.elem().getAusgefuehrt() ? "+" : "-";
-					temp[i] = name + " " + sign + belohnung + " €";
-				}
-				pBilanz.advance();
-			}
-			pBilanz.reset();
-		}
+		else temp = pBilanz.getString();
 		listBilanz.setListData(temp);
 		listBilanz.setFont(new Font("Dialog", Font.PLAIN, 24));
 		JScrollPane scrollBilanz = new JScrollPane(listBilanz);
