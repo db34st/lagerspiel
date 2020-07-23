@@ -1,0 +1,4 @@
+Zur Erstellung wurde die IDE Eclipse for Java Developers 2020-06 verwendet.
+Beim kompilieren mit Visual Studio Code kann es zu Fehlern kommen, da VS Code die in Eclipse geschriebenen Zeichen ä, ö, ü, ß und € nicht als solche erkennt.
+Zur besseren Nachvollziehbarkeit können auch die einzelnen Commits in Git einbezogen werden:
+https://github.com/db34st/lagerspiel
